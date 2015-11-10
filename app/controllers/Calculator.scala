@@ -64,8 +64,11 @@ case class Calculator() {
   }
 
   def sumSeq(s: Seq[Lap], acc: (Seq[Lap], Double)): (Seq[Lap], Double) = {
-    if (s.isEmpty) return acc
-    if (acc._2 > fiveMinutes) return acc
+    if (s.isEmpty){
+      if (acc._2 >= fiveMinutes) return acc
+      else return (Seq(), 0.0)
+    }
+    if (acc._2 >= fiveMinutes) return acc
     sumSeq(s.tail, (acc._1 :+ s.head, acc._2 + s.head.lapTime))
   }
 

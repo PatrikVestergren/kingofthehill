@@ -76,4 +76,42 @@ class CalculatorSpec extends FlatSpec with Matchers {
     calculator.getBestFiveMinutes(Seq(lap1)) should be ((Seq(), 0.0))
   }
 
+  it should "return empty result if no laps runned" in {
+    calculator.getBestFiveMinutes(Seq()) should be ((Seq(), 0.0))
+  }
+
+  it should "find exact five minutes passed" in {
+    val lap1 = Lap("name", 100.0, null)
+    val lap2 = Lap("name", 100.0, null)
+    val lap3 = Lap("name", 100.0, null)
+    calculator.getBestFiveMinutes(Seq(lap1, lap2, lap3))  should be ((Seq(lap1, lap2, lap3), 300))
+  }
+
+  it should "return empty for not fully five minute" in {
+    val lap1 = Lap("name", 100.0, null)
+    val lap2 = Lap("name", 100.0, null)
+    val lap3 = Lap("name", 99.999, null)
+    calculator.getBestFiveMinutes(Seq(lap1, lap2, lap3))  should be ((Seq(), 0.0))
+  }
+
+  it should "find five minutes when more laps" in {
+    val lap1 = Lap("name", 100.0, null)
+    val lap2 = Lap("name", 100.0, null)
+    val lap3 = Lap("name", 100.0, null)
+    val lap4 = Lap("name", 100.0, null)
+    val lap5 = Lap("name", 100.0, null)
+    calculator.getBestFiveMinutes(Seq(lap1, lap2, lap3, lap4, lap5))  should be ((Seq(lap1, lap2, lap3), 300))
+  }
+
+  it should "find five minutes more" in {
+    val lap1 = Lap("name", 100.0, null)
+    val lap2 = Lap("name", 100.0, null)
+    val lap3 = Lap("name", 90.0, null)
+    val lap4 = Lap("name", 90.0, null)
+    val lap5 = Lap("name", 20.0, null)
+    val lap6 = Lap("name", 250.0, null)
+    val lap7 = Lap("name", 200.0, null)
+    calculator.getBestFiveMinutes(Seq(lap1, lap2, lap3, lap4, lap5, lap6, lap7))  should be ((Seq(lap2, lap3, lap4, lap5), 300))
+  }
+
 }
