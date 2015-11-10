@@ -1,0 +1,13 @@
+New log file opened at Mon Nov 09 21:34:31 CET 2015 by 6126@C02MK1UEFD58
+Taking next connection to: 57116
+New client attempting to connect on port: 57117-57116
+  Address = /192.168.1.205:57116
+This client on port 57117 has uuid b0dc89c9-72a1-405e-a4af-b3e4670337db configName play-fork-run humanReadableName Play Fork Run protocolVersion 1 featureTags Vector()
+Connected Clients: play-fork-run-b0dc89c9-72a1-405e-a4af-b3e4670337db
+Taking next connection to: 57116
+Checking to see if clients are empty...
+No non-daemon clients connected after 3 min. Shutting down.
+Server socket thread exiting.
+0 clients open, will close them...
+All client sockets have been closed.
+Closing the 6126@C02MK1UEFD58 logs at Tue Nov 10 08:14:41 CET 2015, goodbye.

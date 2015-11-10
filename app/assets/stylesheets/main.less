@@ -1,0 +1,121 @@
+/* Mixin */
+.border-radius (@radius: 5px) {
+	-webkit-border-radius: @radius;
+	-moz-border-radius: @radius;
+	border-radius: @radius;
+}
+
+@color-black_dark: #3B3738;
+
+@base: #ffffff;
+@container: #ffffff;
+@lighter1: #7E8F7C;
+@lighter2: #626B61;
+
+@font-base: 10px;
+@font-larger1: 12px;
+@font-larger2: 14px;
+@font-larger3: 16px;
+@font-smaller1: 8px;
+
+
+html {
+    font-size: @font-base;
+}
+
+body {
+    background: @base;
+    color: @color-black_dark;
+}
+
+/*tr:nth-child(even) {background: @lighter1}
+tr:nth-child(odd) {background: @lighter2}*/
+
+table {
+    border-collapse: collapse;
+    width: 99%;
+    margin: 0 auto;
+}
+
+.main {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 50px;
+    padding-left: 20px;
+    position: relative;
+
+}
+.left {
+    width: 50%;
+    float: left;
+    padding-bottom: 10px;
+}
+.top {
+    width: 25%;
+    float: right;
+    padding-bottom: 10px;
+}
+.bottom {
+    width: 25%;
+    float: right;
+    padding-bottom: 10px;
+}
+
+.container {
+    background: @container;
+	.border-radius(5px);
+
+}
+
+.tableHead {
+    text-align: left;
+    padding-left: 50px;
+    font-size: @font-larger1;
+    color: @base;
+    background: #190654;
+    border-bottom: dotted @base;
+    border-width: 1px;
+}
+
+.tableFoot {
+    font-size: @font-smaller1;
+    background: @container;
+    color: @container;
+    border-width: 1px;
+}
+
+tr.row {
+    border-bottom:1pt solid black;
+}
+
+.colHead {
+    text-align: left;
+    padding-left: 5px;
+    background: @container;
+    font-size: @font-base;
+    font-family: Georgia, serif;
+}
+
+.pos {
+    text-align: right;
+    padding-right: 10px;
+    font-size: @font-larger1;
+    /*font-family: Impact, Charcoal, sans-serif;*/
+    color: @color-black_dark;
+    width: 50px;
+}
+
+.driver {
+    text-align: left;
+    padding-left: 10px;
+    font-size: @font-larger2;
+    font-family: Georgia, serif;
+}
+
+.colwidth {
+    width: 100px;
+}
+
+.col {
+    text-align: center;
+}

@@ -1,0 +1,109 @@
+@(laps: Seq[CurrentLap], bestLaps: Seq[BestNLaps], bestMinutes: Seq[BestFiveMinutes])
+
+@main("King of the Hill") {
+
+<script>
+function myFunction() {
+    location.reload();
+}
+</script>
+<div class="main">
+    <div class="left">
+        <div class="container">
+            <table id="current">
+                <thead>
+                    <tr>
+                       <th class="tableHead" colspan="6">Current Race</th>
+                    </tr>
+                    <tr id="content">
+                        <th class="colHead">Laps</th>
+                        <th class="colHead">Driver</th>
+                        <th class="colHead colwidth">Time</th>
+                        <th class="colHead colwidth">Fastest</th>
+                        <th class="colHead colwidth">Best 3 Laps</th>
+                        <th class="colHead colwidth">Best 5 Minutes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for((lap, index) <- laps.zipWithIndex) {
+                        <tr class="row">
+                            <td class="pos">@lap.laps</td>
+                            <td class="driver">@lap.name</td>
+                            <td class="col">@lap.time</td>
+                            <td class="col">@lap.fastest</td>
+                            <td class="col">@lap.bestCons</td>
+                            <td class="col">@lap.bestMinutes</td>
+                        </tr>
+                    }
+
+                </tbody>
+                <tr>
+                    <th class="tableFoot" colspan="6">Footer</th>
+                </tr>
+            </table>
+         </div>
+    </div>
+    <div class="top">
+<div class="container">
+    <table id="bestLaps">
+        <thead>
+        <tr>
+            <th class="tableHead" colspan="4">Best 3 Laps</th>
+        </tr>
+        <tr id="content">
+            <th class="colHead">Pos.</th>
+            <th class="colHead">Driver</th>
+            <th class="colHead colwidth">Time</th>
+            <th class="colHead colwidth">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for((lap, index) <- bestLaps.zipWithIndex) {
+        <tr class="row">
+            <td class="pos">@{index+1}</td>
+            <td class="driver">@lap.name</td>
+            <td class="col">@lap.time</td>
+            <td class="col">@lap.date</td>
+        </tr>
+        }
+
+        </tbody>
+        <tr>
+            <th class="tableFoot" colspan="4">Footer</th>
+        </tr>
+    </table>
+</div>
+    </div>
+    <div class="bottom">
+    <div class="container">
+        <table id="bestMinuts">
+            <thead>
+            <tr>
+                <th class="tableHead" colspan="4">Best 5 Minutes</th>
+            </tr>
+            <tr id="content">
+                <th class="colHead">Pos.</th>
+                <th class="colHead">Driver</th>
+                <th class="colHead colwidth">Time</th>
+                <th class="colHead colwidth">Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for((lap, index) <- bestMinutes.zipWithIndex) {
+            <tr class="row">
+                <td class="pos">@{index+1}</td>
+                <td class="driver">@lap.name</td>
+                <td class="col">@lap.time</td>
+                <td class="col">@lap.date</td>
+            </tr>
+            }
+
+            </tbody>
+            <tr>
+                <th class="tableFoot" colspan="4">Footer</th>
+            </tr>
+        </table>
+    </div>
+    </div>
+</div>
+}
