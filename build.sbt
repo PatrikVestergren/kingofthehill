@@ -13,7 +13,7 @@ libraryDependencies ++= Seq(
   "com.google.code.gson" % "gson" % "2.3",
   "org.scalatest" %% "scalatest" % "2.2.1" % "test",
   "org.scalatestplus" %% "play" % "1.4.0-M3" % "test",
-  "org.postgresql" % "postgresql" % "9.4-1205-jdbc42",
+  "org.postgresql" % "postgresql" % "9.4-1205-jdbc4",
   cache,
   evolutions,
   ws,
