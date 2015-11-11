@@ -34,7 +34,7 @@ object Sender extends App {
 
   val cal = Calendar.getInstance()
 
-  for (a <- 1 until 2000)
+  for (a <- 1 until 20)
     for ((driver, t) <- drivers) send(driver, t)
 
   send("P.Vestergren", avg())
@@ -64,11 +64,11 @@ object Sender extends App {
     low + (high - low) * r.nextDouble();
   }
 
-  def pro() = round(generateLapTime(31.000, 28.000))
+  def pro() = generateLapTime(31.000, 28.000)
 
-  def avg() = round(generateLapTime(32.500, 29.500))
+  def avg() = generateLapTime(32.500, 29.500)
 
-  def nov() = round(generateLapTime(40.000, 31.000))
+  def nov() = generateLapTime(40.000, 31.000)
 
-  def round(d: Double) = BigDecimal(d).setScale(3, BigDecimal.RoundingMode.HALF_UP).toDouble
+  //def round(d: Double) = BigDecimal(d).setScale(3, BigDecimal.RoundingMode.HALF_UP).toDouble
 }

@@ -26,6 +26,8 @@ class Application extends Controller {
   )
 
   def index = Action {
+    println(Lap.findAll().size)
+    if (manager.empty()) manager.update(Lap.findAll())
     Ok(views.html.index(manager.getCurrentRacers(), manager.getBestNLaps(3), manager.getBestFiveMinutes()))
   }
 
