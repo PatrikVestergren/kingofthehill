@@ -5,7 +5,7 @@
 CREATE TABLE LAP (
   name                      VARCHAR(255) NOT NULL,
   lapTime                   NUMERIC,
-  ts                        DATE
+  ts                        NUMERIC
 );
 
 # --- !Downs

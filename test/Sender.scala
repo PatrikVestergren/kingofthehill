@@ -34,14 +34,16 @@ object Sender extends App {
 
   val cal = Calendar.getInstance()
 
-  for (a <- 1 until 20)
+  while (true) {
     for ((driver, t) <- drivers) send(driver, t)
+    Thread.sleep(1500)
+  }
 
   send("P.Vestergren", avg())
   send("P.Vestergren", avg())
 
   def send(driver: String, lapTime: Double) = {
-    val lap = new Lap(driver, lapTime)
+    val lap = new Lap(driver, lapTime, cal.getTimeInMillis)
    // println(lap)
     val lapAsJson = new Gson().toJson(lap)
     //println(lapAsJson)

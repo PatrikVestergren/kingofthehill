@@ -1,4 +1,4 @@
-@(laps: Seq[CurrentLap], bestLaps: Seq[BestNLaps], bestMinutes: Seq[BestFiveMinutes])
+@(laps: Seq[CurrentLap], bestLaps: Seq[BestNLaps], bestMinutes: Seq[BestFiveMinutes], date: String)
 
 @main("King of the Hill") {
 
@@ -12,7 +12,7 @@ function myFunction() {
             <table id="current">
                 <thead>
                     <tr>
-                       <th class="tableHead" colspan="6">Current Race</th>
+                       <th class="tableHead" colspan="6">Current Race - @date</th>
                     </tr>
                     <tr id="content">
                         <th class="colHead">Laps</th>
@@ -26,7 +26,7 @@ function myFunction() {
                 <tbody>
                     @for((lap, index) <- laps.zipWithIndex) {
                         <tr class="row">
-                            <td class="pos">@lap.laps</td>
+                            <td class="laps">@lap.laps</td>
                             <td class="driver">@lap.name</td>
                             <td class="col">@lap.time</td>
                             <td class="col">@lap.fastest</td>
@@ -72,7 +72,7 @@ function myFunction() {
     </table>
     </div>
     <div class="bestFiveCont">
-        <table id="bestMinuts">
+        <table id="bestMinutes">
             <thead>
             <tr>
                 <th class="tableHead" colspan="4">Best 5 Minutes</th>
@@ -80,7 +80,7 @@ function myFunction() {
             <tr id="content">
                 <th class="colHead">Pos.</th>
                 <th class="colHead">Driver</th>
-                <th class="colHead colwidth">Time</th>
+                <th class="colHead colwidth">Result</th>
                 <th class="colHead colwidth">Date</th>
             </tr>
             </thead>

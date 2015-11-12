@@ -20,7 +20,7 @@
 
 
 html {
-    font-size: @font-base;
+    font-size: @font-larger2;
 }
 
 body {
@@ -47,15 +47,15 @@ table {
 }
 
 .currentCont {
-    width: 795px;
+    width: 995px;
     padding:5px;
 }
 .bestLapsCont {
-    width: 400px;
+    width: 500px;
     float:left;
 }
 .bestFiveCont{
-    width: 400px;
+    width: 500px;
     float:left;
 }
 
@@ -92,16 +92,24 @@ tr.row {
 .pos {
     text-align: right;
     padding-right: 10px;
-    font-size: @font-larger1;
-    /*font-family: Impact, Charcoal, sans-serif;*/
+    font-size: @font-larger3;
+    font-family: Impact, Charcoal, sans-serif;
     color: @color-black_dark;
-    width: 50px;
+    width: 30px;
+}
+
+.laps {
+        text-align: left;
+        padding-left: 10px;
+        font-size: @font-larger2;
+        color: @color-black_dark;
+        width: 30px;
 }
 
 .driver {
     text-align: left;
     padding-left: 10px;
-    font-size: @font-larger2;
+    font-size: @font-larger3;
     font-family: Georgia, serif;
 }
 
@@ -110,5 +118,6 @@ tr.row {
 }
 
 .col {
-    text-align: center;
+    text-align: left;
+    padding-left: 10px;
 }

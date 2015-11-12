@@ -1,10 +1,6 @@
 package controllers
 
-import java.util.concurrent.TimeUnit
-
 import models.Lap
-
-import scala.concurrent.duration._
 
 /**
  * Created by patrikv on 05/11/15.
@@ -72,6 +68,8 @@ case class Calculator() {
     sumSeq(s.tail, (acc._1 :+ s.head, acc._2 + s.head.lapTime))
   }
 
+  def sortBestTime(a: BestNLaps, b: BestNLaps) = a.time.toDouble < b.time.toDouble
+
 
   def bestTime(a: Seq[Lap], b: Seq[Lap]): Seq[Lap] = {
     if (sumLapTimes(a) < sumLapTimes(b)) a else b
@@ -79,6 +77,18 @@ case class Calculator() {
 
   def sumLapTimes(laps: Seq[Lap]): Double = {
     laps.foldLeft(0.0)((r, c) => r + c.lapTime)
+  }
+
+  def sortBestFive(l: List[BestFiveMinutes]): List[BestFiveMinutes] = {
+    val b = l.sortWith(byLaps)
+    b.sortWith(byTime)
+  }
+
+  def byLaps(a: BestFiveMinutes, b: BestFiveMinutes) = a.best._1.length > b.best._1.length
+  def byTime(a: BestFiveMinutes, b: BestFiveMinutes) = {
+    if (a.best._1.length == b.best._1.length){
+      a.best._2 < b.best._2
+    } else byLaps(a, b)
   }
 
 }

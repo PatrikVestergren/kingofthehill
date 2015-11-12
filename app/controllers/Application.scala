@@ -7,8 +7,6 @@ import java.util.Calendar
 import com.google.gson.Gson
 import models.Lap
 import org.slf4j.LoggerFactory
-import play.api.data.Form
-import play.api.data.Forms.{nonEmptyText, number, tuple}
 import play.api.mvc.{Action, Controller}
 
 
@@ -19,16 +17,10 @@ class Application extends Controller {
   val cal = Calendar.getInstance()
   val manager = new Manager(Lap.findAll())
 
-  val lapForm = Form(
-    tuple(
-      "name" -> nonEmptyText,
-      "lapTime" -> number)
-  )
 
   def index = Action {
-    println(Lap.findAll().size)
     if (manager.empty()) manager.update(Lap.findAll())
-    Ok(views.html.index(manager.getCurrentRacers(), manager.getBestNLaps(3), manager.getBestFiveMinutes()))
+    Ok(views.html.index(manager.getCurrentRacers(), manager.getBestNLaps(3), manager.getBestFiveMinutes(), format.format(cal.getTime())))
   }
 
   def addLap = Action(parse.json) {
@@ -37,31 +29,30 @@ class Application extends Controller {
 
       val name = (res \ "name").as[String]
       val lapTime = (res \ "lapTime").as[Double]
-      if (name == null || lapTime == null) BadRequest
+      if (name == null || lapTime <= 0.0) BadRequest
       else {
-        val lap = new Lap(name, lapTime, cal.getTime)
+        val lap = new Lap(name, lapTime, cal.getTimeInMillis)
         Lap.create(lap)
         manager.update(lap)
         Redirect(routes.Application.index())
       }
-     // Redirect(routes.Application.index())
   }
 
   def getLaps() = Action {
 
     val laps = Lap.findAll()
 
-    val json = new Gson().toJson(allLaps().toArray)
+    val json = new Gson().toJson(laps.toArray)
     logger.info("As JSon: " + json)
     Ok(json).as("application/json")
 
   }
 
-  def allLaps(): Seq[Lap] = {
-    val laps = Lap.findAll()
-
-    if (laps.length > 9) return laps
-    for (l <- laps.length until 10) yield Lap("", 0l, Calendar.getInstance().getTime())
+  def deleteAll() = Action {
+    println("deleting all...")
+    Lap.deleteAll()
+    println("all deleted remaining: " + Lap.findAll().length)
+    Redirect(routes.Application.index())
   }
 }
 //@base: #A65B00;
