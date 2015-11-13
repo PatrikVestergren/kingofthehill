@@ -19,7 +19,9 @@ class Application extends Controller {
 
 
   def index = Action {
+    println("enter index " + Lap.findAll().length)
     if (manager.empty()) manager.update(Lap.findAll())
+    println("gonna call html.index")
     Ok(views.html.index(manager.getCurrentRacers(), manager.getBestNLaps(3), manager.getBestFiveMinutes(), format.format(cal.getTime())))
   }
 
@@ -43,7 +45,7 @@ class Application extends Controller {
     val laps = Lap.findAll()
 
     val json = new Gson().toJson(laps.toArray)
-    logger.info("As JSon: " + json)
+    println("As JSon: " + json)
     Ok(json).as("application/json")
 
   }
