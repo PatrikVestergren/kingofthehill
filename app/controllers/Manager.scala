@@ -29,80 +29,84 @@ class Manager(initLaps: Seq[Lap]) {
 
   def update(lap: Lap): Unit = {
 
-    val name = lap.name
+    val driver = lap.driver
     val lapTime = lap.lapTime
-    val date = format.format(new Date(lap.ts))// else ""
+    val date = format.format(new Date(lap.ts)) // else ""
 
-    drivers.get(name) match {
-      case Some(l) => drivers.put(name, l :+ lap)
-      case None => drivers.put(name, Seq(lap))
+    drivers.get(driver) match {
+      case Some(l) => drivers.put(driver, l :+ lap)
+      case None => drivers.put(driver, Seq(lap))
     }
 
-    drivers.get(name) match {
+    drivers.get(driver) match {
       case Some(laps) => {
-        val bestThree = if (calculator.getBestNLapsTime(laps, 3) > 0.0) formatTime(calculator.getBestNLapsTime(laps, 3)) else "-"
+        val bestThree = if (calculator.getBestNLapsTime(laps, 3) > 0) formatTime(calculator.getBestNLapsTime(laps, 3)) else "-"
         val calced = calculator.getBestFiveMinutes(laps)
-        val bestFive = if (calced._2 > 0.0) calced._1.size.toString() + "/" + formatTime(calced._2) else "-"
-        currentRacers.put(name, CurrentLap(laps.length, name, formatTime(lapTime), formatTime(fastest(laps).lapTime), bestThree, bestFive))
+        val bestFive = if (calced._2 > 0) calced._1.size.toString() + "/" + formatTime(calced._2) else "-"
+        currentRacers.put(driver, CurrentLap(laps.length, driver, lapTime, formatTime(fastest(laps).lapTime), bestThree, bestFive))
       }
-      case None => currentRacers.put(name, CurrentLap(1, name, formatTime(lapTime), formatTime(lapTime), "-", "-"))
+      case None => currentRacers.put(driver, CurrentLap(1, driver, lapTime, formatTime(lapTime), "-", "-"))
     }
 
     for (driver <- drivers.keys) {
       drivers.get(driver) match {
         case Some(l) => {
           val bestN = calculator.getBestNLapsTime(l, 3)
-          if (bestN > 0.0) bestNLaps.put(driver, BestNLaps(driver, formatTime(bestN), date))
+          if (bestN > 0) bestNLaps.put(driver, BestNLaps(driver, bestN, date))
           val bestFive = calculator.getBestFiveMinutes(l)
-          if (bestFive._2 > 0.0) bestFiveMinutes.put(driver, BestFiveMinutes(driver, bestFive._1.size.toString() + "/" + formatTime(bestFive._2), date, bestFive))
+          if (bestFive._2 > 0) bestFiveMinutes.put(driver, BestFiveMinutes(driver, date, bestFive))
         }
         case None =>
       }
     }
   }
+  val f = new SimpleDateFormat("mm:ss.SSS")
+  def formatTime(x: Long): String = f.format(x)
 
-  def formatTime(x: Double): String = "%1.3f".format(x)
-
-  def getCurrentRacers(): Seq[CurrentLap] = {
+  def getCurrentRacers(): Seq[CurrentLapPres] = {
 
     val laps = currentRacers.values.toList
 
     val sorted = laps.sortWith(sortNrOfLaps)
+    val pres = for (s <- sorted) yield CurrentLapPres(s.laps, s.name, formatTime(s.time), s.fastest, s.bestCons, s.bestMinutes)
 
-    if (sorted.size < 15) {
-      val padding = ListBuffer[CurrentLap]()
-      for (i <- sorted.size until 15) padding += CurrentLap(0, "-", "-", "-", "-", "-")
-      return sorted ++ padding
+    if (pres.size < 15) {
+      val padding = ListBuffer[CurrentLapPres]()
+      for (i <- pres.size until 15) padding += CurrentLapPres(0, "-", "-", "-", "-", "-")
+      return pres ++ padding
     }
-    return sorted
+    return pres
   }
 
-  def getBestNLaps(laps: Int): Seq[BestNLaps] = {
+  def getBestNLaps(laps: Int): Seq[BestPres] = {
 
     val b = bestNLaps.values.toList
     val sorted = b.sortWith(calculator.sortBestTime)
-    if (sorted.length < 10) {
-      val padding = ListBuffer[BestNLaps]()
-      for (i <- sorted.size until 10) padding += BestNLaps("", "-", "-")
-      return sorted ++ padding
+    val pres = for (s <- sorted) yield BestPres(s.name, formatTime(s.time), s.date)
+
+    if (pres.length < 10) {
+      val padding = ListBuffer[BestPres]()
+      for (i <- pres.size until 10) padding += BestPres("", "-", "-")
+      return pres ++ padding
     }
-    else if (sorted.length > 10) return sorted.slice(0, 10)
-    else return sorted
+    else if (pres.length > 10) return pres.slice(0, 10)
+    else return pres
   }
 
-  def getBestFiveMinutes(): Seq[BestFiveMinutes] = {
+  def getBestFiveMinutes(): Seq[BestPres] = {
 
     val best = bestFiveMinutes.values.toList
 
 
-    val sorted = calculator.sortBestFive(best)
-    if (sorted.length < 10) {
-      val padding = ListBuffer[BestFiveMinutes]()
-      for (i <- sorted.size until 10) padding += BestFiveMinutes("", "-", "-", (Seq(), 0.0))
-      return sorted ++ padding
+    val sorted = calculator.sortBestFive(best)//
+    val pres = for(s <- sorted) yield BestPres(s.name, s.best._1.size.toString() + "/" + formatTime(s.best._2), s.date)
+    if (pres.length < 10) {
+      val padding = ListBuffer[BestPres]()
+      for (i <- pres.size until 10) padding += BestPres("", "-", "-")
+      return pres ++ padding
     }
-    else if (sorted.length > 10) return sorted.slice(0, 10)
-    else return sorted
+    else if (pres.length > 10) return pres.slice(0, 10)
+    else return pres
 
   }
 
@@ -114,8 +118,8 @@ class Manager(initLaps: Seq[Lap]) {
 
 }
 
-case class CurrentLap(laps: Int, name: String, time: String, fastest: String, bestCons: String, bestMinutes: String)
-
-case class BestNLaps(name: String, time: String, date: String)
-
-case class BestFiveMinutes(name: String, time: String, date: String, best: (Seq[Lap], Double))
+case class CurrentLap(laps: Int, name: String, time: Long, fastest: String, bestCons: String, bestMinutes: String)
+case class BestNLaps(name: String, time: Long, date: String)
+case class BestFiveMinutes(name: String, date: String, best: (Seq[Lap], Long))
+case class CurrentLapPres(laps: Int, name: String, time: String, fastest: String, bestCons: String, bestMinutes: String)
+case class BestPres(name: String, time: String, date: String)

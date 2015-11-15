@@ -3,7 +3,9 @@
 # --- !Ups
 
 CREATE TABLE LAP (
-  name                      VARCHAR(255) NOT NULL,
+  driver                    VARCHAR(255) NOT NULL,
+  transponder               NUMERIC,
+  lapNr                     NUMERIC,
   lapTime                   NUMERIC,
   ts                        NUMERIC
 );
