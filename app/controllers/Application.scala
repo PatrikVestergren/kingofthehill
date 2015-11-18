@@ -14,16 +14,15 @@ class Application extends Controller {
 
   val logger = LoggerFactory.getLogger(getClass)
   val format = new SimpleDateFormat("yyyy-MM-dd")
-  val cal = Calendar.getInstance()
+
   val manager = new Manager(Lap.findAll())
 
   val NR_OF_LAPS = 3
 
 
   def index = Action {
-    println("enter index " + Lap.findAll().length)
+    val cal = Calendar.getInstance()
     if (manager.empty()) manager.update(Lap.findAll())
-    println("gonna call html.index")
     Ok(views.html.index(manager.getCurrentRacers(), manager.getBestNLaps(NR_OF_LAPS), manager.getBestFiveMinutes(), format.format(cal.getTime())))
   }
 
@@ -37,7 +36,7 @@ class Application extends Controller {
       val lapTime = (res \ "lapTime").as[Long]
       if (driver.isEmpty || transponder < 0 || lapNr < 0 || lapTime <= 0) BadRequest
       else {
-        val lap = new Lap(driver, transponder, lapNr, lapTime, cal.getTimeInMillis)
+        val lap = new Lap(driver, transponder, lapNr, lapTime, Calendar.getInstance().getTimeInMillis)
         Lap.create(lap)
         manager.update(lap)
         Redirect(routes.Application.index())
@@ -45,13 +44,9 @@ class Application extends Controller {
   }
 
   def getLaps() = Action {
-
     val laps = Lap.findAll()
-
     val json = new Gson().toJson(laps.toArray)
-    println("As JSon: " + json)
     Ok(json).as("application/json")
-
   }
 
   def deleteAll() = Action {

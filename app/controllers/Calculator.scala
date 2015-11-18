@@ -1,5 +1,7 @@
 package controllers
 
+import java.util.{Date, Calendar}
+
 import models.Lap
 
 /**
@@ -8,6 +10,7 @@ import models.Lap
 case class Calculator() {
 
   val fiveMinutes = 300000
+  val cal = Calendar.getInstance()
 
   def getBestNLapsTime(s: Seq[Lap], nrOfLaps: Int): Long = {
     if (s.length < nrOfLaps) return 0
@@ -90,6 +93,25 @@ case class Calculator() {
     if (a.best._1.length == b.best._1.length) {
       a.best._2 < b.best._2
     } else byLaps(a, b)
+  }
+
+  def isToday(lap: CurrentLap): Boolean = {
+    val cal = Calendar.getInstance();
+    cal.setTimeInMillis(lap.ts)
+    val o = cal.getTime
+    cal.setTimeInMillis(cal.getTimeInMillis)
+    val t = cal.getTime
+    o.after(getStartOfDay(cal.getTime()))
+  }
+
+  def getStartOfDay(d: Date): Date = {
+    val calendar = Calendar.getInstance()
+    calendar.setTime(d)
+    calendar.set(Calendar.HOUR_OF_DAY, 0)
+    calendar.set(Calendar.MINUTE, 0)
+    calendar.set(Calendar.SECOND, 0)
+    calendar.set(Calendar.MILLISECOND, 0)
+    calendar.getTime
   }
 
 }
