@@ -26,7 +26,7 @@ function myFunction() {
                 <tbody>
                     @for((lap, index) <- laps.zipWithIndex) {
                         <tr class="row">
-                            <td class="laps">@lap.laps</td>
+                            <td class="laps">@lap.lapNr</td>
                             <td class="driver">@lap.name</td>
                             <td class="col">@lap.time</td>
                             <td class="col">@lap.fastest</td>

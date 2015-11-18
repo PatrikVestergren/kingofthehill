@@ -69,7 +69,7 @@ class Manager(initLaps: Seq[Lap]) {
     val laps = l.filter(x => calculator.isToday(x))
 
     val sorted = laps.sortWith(calculator.sortNrOfLaps)
-    val pres = for (s <- sorted) yield CurrentLapPres(s.laps, s.name, formatTime(s.time), s.fastest, s.bestCons, s.bestMinutes)
+    val pres = for (s <- sorted) yield CurrentLapPres(s.lapNr, s.name, formatTime(s.time), s.fastest, s.bestCons, s.bestMinutes)
 
     if (pres.size < 15) {
       val padding = ListBuffer[CurrentLapPres]()
@@ -112,8 +112,8 @@ class Manager(initLaps: Seq[Lap]) {
 
 }
 
-case class CurrentLap(laps: Int, name: String, time: Long, fastest: String, bestCons: String, bestMinutes: String, ts: Long)
+case class CurrentLap(lapNr: Int, name: String, time: Long, fastest: String, bestCons: String, bestMinutes: String, ts: Long)
 case class BestNLaps(name: String, time: Long, date: String)
 case class BestFiveMinutes(name: String, date: String, best: (Seq[Lap], Long))
-case class CurrentLapPres(laps: Int, name: String, time: String, fastest: String, bestCons: String, bestMinutes: String)
+case class CurrentLapPres(lapNr: Int, name: String, time: String, fastest: String, bestCons: String, bestMinutes: String)
 case class BestPres(name: String, time: String, date: String)
