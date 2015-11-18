@@ -1,6 +1,6 @@
 package controllers
 
-import java.util.{Date, Calendar}
+import java.util.{Calendar, Date}
 
 import models.Lap
 
@@ -14,15 +14,7 @@ case class Calculator() {
 
   def getBestNLapsTime(s: Seq[Lap], nrOfLaps: Int): Long = {
     if (s.length < nrOfLaps) return 0
-    val millis = sumLapTimes(getBestNLaps(s, nrOfLaps))
-    //    val f = String.format("%02d min, %02d sec",
-    //      TimeUnit.MILLISECONDS.toMinutes(millis),
-    //      TimeUnit.MILLISECONDS.toSeconds(millis) -
-    //        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
-    //    )
-    //
-    //    f
-    millis
+    sumLapTimes(getBestNLaps(s, nrOfLaps))
   }
 
   def getBestNLaps(s: Seq[Lap], nrOfLaps: Int): Seq[Lap] = {
@@ -73,6 +65,8 @@ case class Calculator() {
 
   def sortBestTime(a: BestNLaps, b: BestNLaps) = a.time.toLong < b.time.toLong
 
+  def sortNrOfLaps(a: CurrentLap, b: CurrentLap) = a.laps > b.laps
+
 
   def bestTime(a: Seq[Lap], b: Seq[Lap]): Seq[Lap] = {
     if (sumLapTimes(a) < sumLapTimes(b)) a else b
@@ -96,17 +90,13 @@ case class Calculator() {
   }
 
   def isToday(lap: CurrentLap): Boolean = {
-    val cal = Calendar.getInstance();
-    cal.setTimeInMillis(lap.ts)
-    val o = cal.getTime
-    cal.setTimeInMillis(cal.getTimeInMillis)
-    val t = cal.getTime
-    o.after(getStartOfDay(cal.getTime()))
+    val lapDate = Calendar.getInstance();
+    lapDate.setTimeInMillis(lap.ts)
+    lapDate.getTime.after(getStartOfDay())
   }
 
-  def getStartOfDay(d: Date): Date = {
+  def getStartOfDay(): Date = {
     val calendar = Calendar.getInstance()
-    calendar.setTime(d)
     calendar.set(Calendar.HOUR_OF_DAY, 0)
     calendar.set(Calendar.MINUTE, 0)
     calendar.set(Calendar.SECOND, 0)

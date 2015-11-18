@@ -1,6 +1,6 @@
 import java.util.Calendar
 
-import controllers.BestFiveMinutes
+import controllers.{BestFiveMinutes, CurrentLap}
 import models.Lap
 import org.scalatest.{FlatSpec, Matchers}
 
@@ -71,7 +71,7 @@ class CalculatorSpec extends FlatSpec with Matchers {
     val lap1 = Lap("name", 0, 0, 100000, cal.getTimeInMillis)
     val lap2 = Lap("name", 0, 0, 100000, cal.getTimeInMillis)
     val lap3 = Lap("name", 0, 0, 101000, cal.getTimeInMillis)
-    calculator.getBestFiveMinutes(Seq(lap1, lap2, lap3)) should be((Seq(lap1, lap2, lap3), 301))
+    calculator.getBestFiveMinutes(Seq(lap1, lap2, lap3)) should be((Seq(lap1, lap2, lap3), 301000))
   }
 
   it should "return empty result if not five minutes passed" in {
@@ -87,7 +87,7 @@ class CalculatorSpec extends FlatSpec with Matchers {
     val lap1 = Lap("name", 0, 0, 100000, cal.getTimeInMillis)
     val lap2 = Lap("name", 0, 0, 100000, cal.getTimeInMillis)
     val lap3 = Lap("name", 0, 0, 100000, cal.getTimeInMillis)
-    calculator.getBestFiveMinutes(Seq(lap1, lap2, lap3)) should be((Seq(lap1, lap2, lap3), 300))
+    calculator.getBestFiveMinutes(Seq(lap1, lap2, lap3)) should be((Seq(lap1, lap2, lap3), 300000))
   }
 
   it should "return empty for not fully five minute" in {
@@ -103,7 +103,7 @@ class CalculatorSpec extends FlatSpec with Matchers {
     val lap3 = Lap("name", 0, 0, 100000, cal.getTimeInMillis)
     val lap4 = Lap("name", 0, 0, 100000, cal.getTimeInMillis)
     val lap5 = Lap("name", 0, 0, 100000, cal.getTimeInMillis)
-    calculator.getBestFiveMinutes(Seq(lap1, lap2, lap3, lap4, lap5)) should be((Seq(lap1, lap2, lap3), 300))
+    calculator.getBestFiveMinutes(Seq(lap1, lap2, lap3, lap4, lap5)) should be((Seq(lap1, lap2, lap3), 300000))
   }
 
   it should "find five minutes more" in {
@@ -114,7 +114,7 @@ class CalculatorSpec extends FlatSpec with Matchers {
     val lap5 = Lap("name", 0, 0, 20000, cal.getTimeInMillis)
     val lap6 = Lap("name", 0, 0, 250000, cal.getTimeInMillis)
     val lap7 = Lap("name", 0, 0, 200000, cal.getTimeInMillis)
-    calculator.getBestFiveMinutes(Seq(lap1, lap2, lap3, lap4, lap5, lap6, lap7)) should be((Seq(lap2, lap3, lap4, lap5), 300))
+    calculator.getBestFiveMinutes(Seq(lap1, lap2, lap3, lap4, lap5, lap6, lap7)) should be((Seq(lap2, lap3, lap4, lap5), 300000))
   }
 
   it should "calculate best five by number of laps" in {
@@ -142,9 +142,13 @@ class CalculatorSpec extends FlatSpec with Matchers {
     calculator.sortBestFive(l) should be(l.reverse)
   }
 
-  it should "blslsls" in {
-    val d = 34.1234567
-    println("%1.3f".format(d))
+  it should "be able to see if lap is from today" in {
+    val yesterday = Calendar.getInstance()
+    yesterday.add(Calendar.DATE, -1)
+    val lap1 = CurrentLap(1, "name1", 100, "", "", "", yesterday.getTimeInMillis)
+    val lap2 = CurrentLap(1, "name1", 100, "", "", "", Calendar.getInstance().getTimeInMillis)
+    calculator.isToday(lap1) should be(false)
+    calculator.isToday(lap2) should be(true)
   }
 
 }

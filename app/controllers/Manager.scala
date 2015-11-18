@@ -66,9 +66,9 @@ class Manager(initLaps: Seq[Lap]) {
   def getCurrentRacers(): Seq[CurrentLapPres] = {
 
     val l = currentRacers.values.toList
-    val laps = l//.filter(x => calculator.isToday(x.))
+    val laps = l.filter(x => calculator.isToday(x))
 
-    val sorted = laps.sortWith(sortNrOfLaps)
+    val sorted = laps.sortWith(calculator.sortNrOfLaps)
     val pres = for (s <- sorted) yield CurrentLapPres(s.laps, s.name, formatTime(s.time), s.fastest, s.bestCons, s.bestMinutes)
 
     if (pres.size < 15) {
@@ -98,8 +98,7 @@ class Manager(initLaps: Seq[Lap]) {
 
     val best = bestFiveMinutes.values.toList
 
-
-    val sorted = calculator.sortBestFive(best)//
+    val sorted = calculator.sortBestFive(best)
     val pres = for(s <- sorted) yield BestPres(s.name, s.best._1.size.toString() + "/" + formatTime(s.best._2), s.date)
     if (pres.length < 10) {
       val padding = ListBuffer[BestPres]()
@@ -110,12 +109,6 @@ class Manager(initLaps: Seq[Lap]) {
     else return pres
 
   }
-
-
-  def sortNrOfLaps(a: CurrentLap, b: CurrentLap) = {
-    a.laps > b.laps
-  }
-
 
 }
 
