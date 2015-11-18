@@ -31,7 +31,8 @@ class Manager(initLaps: Seq[Lap]) {
 
     val driver = lap.driver
     val lapTime = lap.lapTime
-    val date = format.format(new Date(lap.ts)) // else ""
+    val lapNr = lap.lapNr
+    val date = format.format(new Date(lap.ts))
 
     drivers.get(driver) match {
       case Some(l) => drivers.put(driver, l :+ lap)
@@ -43,7 +44,7 @@ class Manager(initLaps: Seq[Lap]) {
         val bestThree = if (calculator.getBestNLapsTime(laps, 3) > 0) formatTime(calculator.getBestNLapsTime(laps, 3)) else "-"
         val calced = calculator.getBestFiveMinutes(laps)
         val bestFive = if (calced._2 > 0) calced._1.size.toString() + "/" + formatTime(calced._2) else "-"
-        currentRacers.put(driver, CurrentLap(laps.length, driver, lapTime, formatTime(fastest(laps).lapTime), bestThree, bestFive, lap.ts))
+        currentRacers.put(driver, CurrentLap(lapNr, driver, lapTime, formatTime(fastest(laps).lapTime), bestThree, bestFive, lap.ts))
       }
       case None => currentRacers.put(driver, CurrentLap(1, driver, lapTime, formatTime(lapTime), "-", "-", lap.ts))
     }
@@ -112,8 +113,8 @@ class Manager(initLaps: Seq[Lap]) {
 
 }
 
-case class CurrentLap(lapNr: Int, name: String, time: Long, fastest: String, bestCons: String, bestMinutes: String, ts: Long)
+case class CurrentLap(lapNr: Long, name: String, time: Long, fastest: String, bestCons: String, bestMinutes: String, ts: Long)
 case class BestNLaps(name: String, time: Long, date: String)
 case class BestFiveMinutes(name: String, date: String, best: (Seq[Lap], Long))
-case class CurrentLapPres(lapNr: Int, name: String, time: String, fastest: String, bestCons: String, bestMinutes: String)
+case class CurrentLapPres(lapNr: Long, name: String, time: String, fastest: String, bestCons: String, bestMinutes: String)
 case class BestPres(name: String, time: String, date: String)
