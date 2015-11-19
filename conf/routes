@@ -4,6 +4,7 @@
 
 # Home page
 GET     /                           controllers.Application.index
+GET     /lapsFor:driver             controllers.Application.lapsFor(driver: String)
 GET     /getLaps                    controllers.Application.getLaps
 POST    /addLap                     controllers.Application.addLap
 DELETE  /deleteAll                  controllers.Application.deleteAll

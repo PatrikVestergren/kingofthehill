@@ -95,6 +95,12 @@ case class Calculator() {
     lapDate.getTime.after(getStartOfDay())
   }
 
+  def isTodayForLap(lap: Lap): Boolean = {
+    val lapDate = Calendar.getInstance();
+    lapDate.setTimeInMillis(lap.ts)
+    lapDate.getTime.after(getStartOfDay())
+  }
+
   def getStartOfDay(): Date = {
     val calendar = Calendar.getInstance()
     calendar.set(Calendar.HOUR_OF_DAY, 0)

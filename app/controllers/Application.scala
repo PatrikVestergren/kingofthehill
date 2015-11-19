@@ -49,6 +49,12 @@ class Application extends Controller {
     Ok(json).as("application/json")
   }
 
+  def lapsFor(driver: String) = Action {
+    val laps = manager.getTodaysLapsFor(driver)
+    val title = if (laps.length > 0) driver + " ["+laps(0).transponder+"]" else driver
+    Ok(views.html.lapsFor(laps, title))
+  }
+
   def deleteAll() = Action {
     println("deleting all...")
     Lap.deleteAll()

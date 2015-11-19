@@ -1,0 +1,31 @@
+@(laps: Seq[DriverLap], title: String)
+
+@main("King of the Hill") {
+
+        <div class="currentCont">
+            <table class="lapsFor">
+                <thead>
+                    <tr>
+                       <th class="tableHead" colspan="2">@title</th>
+                    </tr>
+                    <tr id="content">
+                        <th class="colHead">Lap</th>
+                        <th class="colHead colwidth">Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for(lap <- laps) {
+                        <tr class=@lap.cssClass>
+                            <td class="laps">@lap.lapNr</td>
+                            <td class="col">@lap.time</td>
+                        </tr>
+                    }
+
+                </tbody>
+                <tr>
+                    <th class="tableFoot" colspan="2">Footer</th>
+                </tr>
+            </table>
+         </div>
+
+}
