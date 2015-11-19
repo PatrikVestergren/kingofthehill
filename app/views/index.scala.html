@@ -27,7 +27,7 @@ function myFunction() {
                     @for((lap, index) <- laps.zipWithIndex) {
                         <tr class="row">
                             <td class="laps">@lap.lapNr</td>
-                            <td class="driver"><a href="@routes.Application.lapsFor(lap.name)">@lap.name</a></td>
+                            <td class="driver"><a href="@routes.Application.lapsFor(lap.transponder)">@lap.name</a></td>
                             <td class="col">@lap.time</td>
                             <td class="col">@lap.fastest</td>
                             <td class="col">@lap.bestCons</td>

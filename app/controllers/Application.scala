@@ -37,8 +37,10 @@ class Application extends Controller {
       if (driver.isEmpty || transponder < 0 || lapNr < 0 || lapTime <= 0) BadRequest
       else {
         val lap = new Lap(driver, transponder, lapNr, lapTime, Calendar.getInstance().getTimeInMillis)
-        Lap.create(lap)
-        manager.update(lap)
+        if (!manager.contains(lap)) {
+          Lap.create(lap)
+          manager.update(lap)
+        }
         Redirect(routes.Application.index())
       }
   }
@@ -49,9 +51,9 @@ class Application extends Controller {
     Ok(json).as("application/json")
   }
 
-  def lapsFor(driver: String) = Action {
-    val laps = manager.getTodaysLapsFor(driver)
-    val title = if (laps.length > 0) driver + " ["+laps(0).transponder+"]" else driver
+  def lapsFor(transponder: String) = Action {
+    val laps = manager.getTodaysLapsFor(transponder.toLong)
+    val title = if (laps.length > 0) laps(0).name + " ["+transponder+"]" else "-"
     Ok(views.html.lapsFor(laps, title))
   }
 

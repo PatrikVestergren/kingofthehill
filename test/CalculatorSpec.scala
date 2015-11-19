@@ -145,8 +145,8 @@ class CalculatorSpec extends FlatSpec with Matchers {
   it should "be able to see if lap is from today" in {
     val yesterday = Calendar.getInstance()
     yesterday.add(Calendar.DATE, -1)
-    val lap1 = CurrentLap(1, "name1", 100, "", "", "", yesterday.getTimeInMillis)
-    val lap2 = CurrentLap(1, "name1", 100, "", "", "", Calendar.getInstance().getTimeInMillis)
+    val lap1 = CurrentLap(1, "name1", "12345", 100, "", "", "", yesterday.getTimeInMillis)
+    val lap2 = CurrentLap(1, "name1", "12345", 100, "", "", "", Calendar.getInstance().getTimeInMillis)
     calculator.isToday(lap1) should be(false)
     calculator.isToday(lap2) should be(true)
   }
