@@ -52,9 +52,12 @@ class Application extends Controller {
   }
 
   def lapsFor(transponder: String) = Action {
-    val laps = manager.getTodaysLapsFor(transponder.toLong)
-    val title = if (laps.length > 0) laps(0).name + " ["+transponder+"]" else "-"
-    Ok(views.html.lapsFor(laps, title))
+    if (transponder == "-") Redirect(routes.Application.index())
+    else {
+      val laps = manager.getTodaysLapsFor(transponder.toLong)
+      val title = if (laps.length > 0) laps(0).name + " [" + transponder + "]" else "-"
+      Ok(views.html.lapsFor(laps, title))
+    }
   }
 
   def deleteAll() = Action {
