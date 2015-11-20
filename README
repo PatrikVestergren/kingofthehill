@@ -1,4 +1,12 @@
-This is your new Play application
+King of The Hill
 =================================
 
-This file will be packaged with your application, when using `activator dist`.
+This is a play framework application build in scala.
+
+To run it locally:
+1) fork repository
+2) go to https://www.typesafe.com/activator/download and download activator
+3) set activator path like: export PATH=/path/to/activator-dist-1.3.6/:$PATH
+4) go to folder where project was downloaded to
+5) type: activator run
+6) go to: localhost/9000
