@@ -40,6 +40,8 @@ class Application extends Controller {
         if (!manager.contains(lap)) {
           Lap.create(lap)
           manager.update(lap)
+        } else {
+          println("Found dublett")
         }
         Redirect(routes.Application.index())
       }

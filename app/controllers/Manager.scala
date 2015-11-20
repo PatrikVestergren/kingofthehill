@@ -33,7 +33,7 @@ class Manager(initLaps: Seq[Lap]) {
     val lapTime = lap.lapTime
     val lapNr = lap.lapNr
     val transponder = lap.transponder
-    val date = format.format(new Date(lap.ts))
+    val date = format.format(lap.ts)
 
     drivers.get(transponder) match {
       case Some(l) => {
