@@ -55,10 +55,17 @@ class Manager(initLaps: Seq[Lap]) {
     for (tran <- drivers.keys) {
       drivers.get(tran) match {
         case Some(l) => {
-          val bestN = calculator.getBestNLapsTime(l, 3)
-          if (bestN > 0) bestNLaps.put(tran, BestNLaps(driver, bestN, date))
+          val bT = calculator.getBestNLapsTime(l, 3)
+          val bestN = calculator.getBestNLaps(l, 3)
+          if (bestN.nonEmpty) {
+            bestNLaps.put(tran, BestNLaps(bestN(0).driver, bestN(0).transponder, bT, format.format(bestN(0).ts)))
+          }
           val bestFive = calculator.getBestFiveMinutes(l)
-          if (bestFive._2 > 0) bestFiveMinutes.put(tran, BestFiveMinutes(driver, date, bestFive))
+          if (bestFive._2 > 0) {
+            val name = bestFive._1(0).driver
+            val when = bestFive._1(0).ts
+            bestFiveMinutes.put(tran, BestFiveMinutes(name, format.format(when), bestFive))
+          }
         }
         case None =>
       }
@@ -118,6 +125,7 @@ class Manager(initLaps: Seq[Lap]) {
   def getBestNLaps(laps: Int): Seq[BestPres] = {
 
     val b = bestNLaps.values.toList
+
     val sorted = b.sortWith(calculator.sortBestTime)
     val pres = for (s <- sorted) yield BestPres(s.name, formatTime(s.time), s.date)
 
@@ -158,7 +166,7 @@ class Manager(initLaps: Seq[Lap]) {
 
 case class CurrentLap(lapNr: Long, name: String, transponder: String, time: Long, fastest: String, bestCons: String, bestMinutes: String, ts: Long)
 
-case class BestNLaps(name: String, time: Long, date: String)
+case class BestNLaps(name: String, transponder: Long, time: Long, date: String)
 
 case class BestFiveMinutes(name: String, date: String, best: (Seq[Lap], Long))
 
