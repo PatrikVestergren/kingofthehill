@@ -90,7 +90,7 @@ class Manager(initLaps: Seq[Lap]) {
     if (todays.isEmpty) {
       return Seq()
     }
-    val sorted = todays.sortWith(calculator.sortNrOfLaps)
+    val sorted = todays.sortWith(calculator.sortNrOfLaps).distinct
 
     val transponder = todays(0).transponder
     val bestLap = calculator.getBestNLaps(sorted, 1)
