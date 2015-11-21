@@ -66,6 +66,8 @@ case class Calculator() {
   def sortBestTime(a: BestNLaps, b: BestNLaps) = a.time.toLong < b.time.toLong
 
   def sortNrOfLaps(a: CurrentLap, b: CurrentLap) = a.lapNr > b.lapNr
+  def sortNrOfLaps(a: Lap, b: Lap) = a.lapNr > b.lapNr
+  def sortNrOfLaps(a: DriverLap, b: DriverLap) = a.lapNr < b.lapNr
 
 
   def bestTime(a: Seq[Lap], b: Seq[Lap]): Seq[Lap] = {

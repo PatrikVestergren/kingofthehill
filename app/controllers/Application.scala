@@ -57,7 +57,7 @@ class Application extends Controller {
     if (transponder == "-") Redirect(routes.Application.index())
     else {
       val laps = manager.getTodaysLapsFor(transponder.toLong)
-      val title = if (laps.length > 0) laps(0).name + " [" + transponder + "]" else "-"
+      val title = if (laps.size > 0) laps.head.name + " [" + transponder + "]" else "-"
       Ok(views.html.lapsFor(laps, title))
     }
   }

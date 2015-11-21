@@ -90,14 +90,17 @@ class Manager(initLaps: Seq[Lap]) {
     if (todays.isEmpty) {
       return Seq()
     }
+    val sorted = todays.sortWith(calculator.sortNrOfLaps)
+
     val transponder = todays(0).transponder
-    val bestLap = calculator.getBestNLaps(todays, 1)
-    val bestN = calculator.getBestNLaps(todays, 3)
-    val bestFive = calculator.getBestFiveMinutes(todays)
+    val bestLap = calculator.getBestNLaps(sorted, 1)
+    val bestN = calculator.getBestNLaps(sorted, 3)
+    val bestFive = calculator.getBestFiveMinutes(sorted)
 
-    val result = for (lap <- todays) yield DriverLap(lap.driver, transponder, lap.lapNr, formatTime(lap.lapTime), calcClass(lap.lapNr, bestLap(0), bestN, bestFive))
+    val result = for (lap <- sorted) yield DriverLap(lap.driver, transponder, lap.lapNr, formatTime(lap.lapTime), calcClass(lap.lapNr, bestLap(0), bestN, bestFive))
 
-    result
+    val b = result.sortWith(calculator.sortNrOfLaps)
+    b.distinct
   }
 
   def calcClass(lapNr: Long, bestLap: Lap, bestN: Seq[Lap], bestFive: (Seq[Lap], Long)): String = {
