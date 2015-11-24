@@ -1,12 +1,6 @@
-@(laps: Seq[CurrentLapPres], bestLaps: Seq[BestPres], bestMinutes: Seq[BestPres], date: String)
+@(laps: Seq[CurrentRacer], bestLaps: Seq[BestNLaps], bestMinutes: Seq[BestMinutes], date: String)
 
 @main("King of the Hill") {
-
-<script>
-function myFunction() {
-    location.reload();
-}
-</script>
 
         <div class="currentCont">
             <table class="current">
@@ -24,14 +18,14 @@ function myFunction() {
                     </tr>
                 </thead>
                 <tbody>
-                    @for((lap, index) <- laps.zipWithIndex) {
+                    @for(lap <- laps) {
                         <tr class="row">
                             <td class="laps">@lap.lapNr</td>
-                            <td class="driver"><a href="@routes.Application.lapsFor(lap.transponder)">@lap.name</a></td>
-                            <td class="col">@lap.time</td>
+                            <td class="driver"><a href="@routes.Application.lapsFor(lap.transponder)">@lap.driver</a></td>
+                            <td class="col">@lap.lapTime</td>
                             <td class="col">@lap.fastest</td>
-                            <td class="col">@lap.bestCons</td>
-                            <td class="col">@lap.bestMinutes</td>
+                            <td class="col">@lap.bestN</td>
+                            <td class="col">@lap.bestFive</td>
                         </tr>
                     }
 
@@ -59,9 +53,9 @@ function myFunction() {
         @for((lap, index) <- bestLaps.zipWithIndex) {
         <tr class="row">
             <td class="pos">@{index+1}</td>
-            <td class="driver">@lap.name</td>
-            <td class="col">@lap.time</td>
-            <td class="col">@lap.date</td>
+            <td class="driver">@lap.driver</td>
+            <td class="col">@lap.totalTimePres</td>
+            <td class="col">@lap.tsPres</td>
         </tr>
         }
 
@@ -88,9 +82,9 @@ function myFunction() {
             @for((lap, index) <- bestMinutes.zipWithIndex) {
             <tr class="row">
                 <td class="pos">@{index+1}</td>
-                <td class="driver">@lap.name</td>
-                <td class="col">@lap.time</td>
-                <td class="col">@lap.date</td>
+                <td class="driver">@lap.driver</td>
+                <td class="col">@lap.result</td>
+                <td class="col">@lap.tsPres</td>
             </tr>
             }
 

@@ -1,8 +1,7 @@
 package controllers
 
 
-import java.text.SimpleDateFormat
-import java.util.Calendar
+import java.time.LocalDate
 
 import com.google.gson.Gson
 import models.Lap
@@ -13,17 +12,12 @@ import play.api.mvc.{Action, Controller}
 class Application extends Controller {
 
   val logger = LoggerFactory.getLogger(getClass)
-  val format = new SimpleDateFormat("yyyy-MM-dd")
-
-  val manager = new Manager(Lap.findAll())
-
   val NR_OF_LAPS = 3
+  val manager = new Manager(NR_OF_LAPS)
 
 
   def index = Action {
-    val cal = Calendar.getInstance()
-    if (manager.empty()) manager.update(Lap.findAll())
-    Ok(views.html.index(manager.getCurrentRacers(), manager.getBestNLaps(NR_OF_LAPS), manager.getBestFiveMinutes(), format.format(cal.getTime())))
+    Ok(views.html.index(manager.getCurrentRacers(), manager.getBestNLaps(NR_OF_LAPS), manager.getBestFiveMinutes(), LocalDate.now().toString))
   }
 
   def addLap = Action(parse.json) {
@@ -36,13 +30,8 @@ class Application extends Controller {
       val lapTime = (res \ "lapTime").as[Long]
       if (driver.isEmpty || transponder < 0 || lapNr < 0 || lapTime <= 0) BadRequest
       else {
-        val lap = new Lap(driver, transponder, lapNr, lapTime, Calendar.getInstance().getTimeInMillis)
-        if (!manager.contains(lap)) {
-          Lap.create(lap)
-          manager.update(lap)
-        } else {
-          println("Found dublett")
-        }
+        val lap = new Lap(driver, transponder, lapNr, lapTime, LocalDate.now())
+        manager.update(lap)
         Redirect(routes.Application.index())
       }
   }
@@ -53,12 +42,12 @@ class Application extends Controller {
     Ok(json).as("application/json")
   }
 
-  def lapsFor(transponder: String) = Action {
-    if (transponder == "-") Redirect(routes.Application.index())
+  def lapsFor(transponder: Long) = Action {
+    if (transponder == 0) Redirect(routes.Application.index())
     else {
       val laps = manager.getTodaysLapsFor(transponder.toLong)
-      val title = if (laps.size > 0) laps.head.name + " [" + transponder + "]" else "-"
-      Ok(views.html.lapsFor(laps, title))
+      val title = if (laps._1.size > 0) laps._1.head.name + " [" + transponder + "]" else "-"
+      Ok(views.html.lapsFor(laps._1, laps._2, laps._3, title))
     }
   }
 

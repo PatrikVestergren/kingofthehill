@@ -1,4 +1,4 @@
-@(laps: Seq[DriverLap], title: String)
+@(laps: Seq[DriverLap], bestN: String, bestFive: String, title: String)
 
 @main("King of the Hill") {
 
@@ -6,7 +6,7 @@
             <table class="lapsFor">
                 <thead>
                     <tr>
-                       <th class="tableHead" colspan="2">@title</th>
+                       <th class="tableHead" colspan="2">@title - Best 3 laps: @bestN Best five minutes: @bestFive</th>
                     </tr>
                     <tr id="content">
                         <th class="colHead">Lap</th>

@@ -4,7 +4,7 @@
 
 # Home page
 GET     /                           controllers.Application.index
-GET     /lapsFor:transponder        controllers.Application.lapsFor(transponder: String)
+GET     /lapsFor:transponder        controllers.Application.lapsFor(transponder: Long)
 GET     /getLaps                    controllers.Application.getLaps
 POST    /addLap                     controllers.Application.addLap
 DELETE  /deleteAll                  controllers.Application.deleteAll

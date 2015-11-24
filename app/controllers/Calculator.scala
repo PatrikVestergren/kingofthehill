@@ -2,7 +2,7 @@ package controllers
 
 import java.util.{Calendar, Date}
 
-import models.Lap
+import models.{CurrentRacer, BestMinutes, Lap}
 
 /**
   * Created by patrikv on 05/11/15.
@@ -54,6 +54,14 @@ case class Calculator() {
     return b
   }
 
+  def bestFiveSingle(a: (Int, Long), b: (Int, Long)): (Int, Long) = {
+    if (a._1 > b._1) return a
+    else if (a._1 == b._1) {
+      if (a._2 < b._2) return a
+    }
+    return b
+  }
+
   def sumSeq(s: Seq[Lap], acc: (Seq[Lap], Long)): (Seq[Lap], Long) = {
     if (s.isEmpty) {
       if (acc._2 >= fiveMinutes) return acc
@@ -63,9 +71,9 @@ case class Calculator() {
     sumSeq(s.tail, (acc._1 :+ s.head, acc._2 + s.head.lapTime))
   }
 
-  def sortBestTime(a: BestNLaps, b: BestNLaps) = a.time.toLong < b.time.toLong
+  //def sortBestTime(a: BestNLaps, b: BestNLaps) = a.time.toLong < b.time.toLong
 
-  def sortNrOfLaps(a: CurrentLap, b: CurrentLap) = a.lapNr > b.lapNr
+  def sortNrOfLaps(a: CurrentRacer, b: CurrentRacer) = a.lapNr > b.lapNr
   def sortNrOfLaps(a: Lap, b: Lap) = a.lapNr > b.lapNr
   def sortNrOfLaps(a: DriverLap, b: DriverLap) = a.lapNr < b.lapNr
 
@@ -78,28 +86,29 @@ case class Calculator() {
     laps.foldLeft(0l)((r, c) => r + c.lapTime)
   }
 
-  def sortBestFive(l: List[BestFiveMinutes]): List[BestFiveMinutes] = {
+  def sortBestFive(l: List[BestMinutes]): List[BestMinutes] = {
     val b = l.sortWith(byLaps)
     b.sortWith(byTime)
   }
 
-  def byLaps(a: BestFiveMinutes, b: BestFiveMinutes) = a.best._1.length > b.best._1.length
+  def byLaps(a: BestMinutes, b: BestMinutes) = a.laps > b.laps
 
-  def byTime(a: BestFiveMinutes, b: BestFiveMinutes) = {
-    if (a.best._1.length == b.best._1.length) {
-      a.best._2 < b.best._2
+  def byTime(a: BestMinutes, b: BestMinutes) = {
+    if (a.laps == b.laps) {
+      a.totalTime < b.totalTime
     } else byLaps(a, b)
   }
 
-  def isToday(lap: CurrentLap): Boolean = {
-    val lapDate = Calendar.getInstance();
-    lapDate.setTimeInMillis(lap.ts)
-    lapDate.getTime.after(getStartOfDay())
-  }
+//  def isToday(lap: CurrentLap): Boolean = {
+////    val lapDate = Calendar.getInstance();
+////    lapDate.setTimeInMillis(lap.ts.getTime)
+////    lapDate.getTime.after(getStartOfDay())
+//    true
+//  }
 
   def isTodayForLap(lap: Lap): Boolean = {
     val lapDate = Calendar.getInstance();
-    lapDate.setTimeInMillis(lap.ts)
+    lapDate.setTimeInMillis(lap.ts.toEpochDay)
     lapDate.getTime.after(getStartOfDay())
   }
 

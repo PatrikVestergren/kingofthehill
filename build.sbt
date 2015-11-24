@@ -8,8 +8,7 @@ scalaVersion := "2.11.6"
 
 libraryDependencies ++= Seq(
   jdbc,
-  "com.typesafe.play" % "anorm_2.11" % "2.4.0",
-  "com.h2database" % "h2" % "1.3.168",
+  "com.typesafe.play" % "anorm_2.11" % "2.5.0",
   "com.google.code.gson" % "gson" % "2.3",
   "org.scalatest" %% "scalatest" % "2.2.1" % "test",
   "org.scalatestplus" %% "play" % "1.4.0-M3" % "test",
