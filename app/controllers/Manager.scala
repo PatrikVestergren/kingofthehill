@@ -84,7 +84,7 @@ class Manager(nrOfLaps: Int) {
 
   def getCurrentRacers(): Seq[CurrentRacer] = {
 
-    val racers = CurrentRacer.getLatest().sortWith(calculator.sortNrOfLaps)
+    val racers = Seq()//CurrentRacer.getLatest().sortWith(calculator.sortNrOfLaps)
 
     if (racers.size < 15) {
       val padding = ListBuffer[CurrentRacer]()
