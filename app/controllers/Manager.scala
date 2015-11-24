@@ -123,6 +123,12 @@ class Manager(nrOfLaps: Int) {
 
   }
 
+  def getRecord(): (String, String, String) = {
+    val lap = Lap.trackRecord()
+    if (lap.nonEmpty) (formatTime(lap.head.lapTime), lap.head.driver, lap.head.ts.toString)
+    else ("-", "-", "-")
+  }
+
 }
 
 case class DriverLap(name: String, transponder: Long, lapNr: Long, time: String, cssClass: String)

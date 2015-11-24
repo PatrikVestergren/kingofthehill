@@ -1,7 +1,7 @@
-@(laps: Seq[CurrentRacer], bestLaps: Seq[BestNLaps], bestMinutes: Seq[BestMinutes], date: String)
+@(laps: Seq[CurrentRacer], bestLaps: Seq[BestNLaps], bestMinutes: Seq[BestMinutes], date: String, record: String, recordHolder: String, recordDate: String)
 
 @main("King of the Hill") {
-
+<!--div class="record">Track: Evolution Raceway Record: @record hold by @recordHolder (@recordDate)</div-->
         <div class="currentCont">
             <table class="current">
                 <thead>

@@ -51,6 +51,12 @@ object BestNLaps {
     }
   }
 
+  def deleteAll() = {
+    DB.withConnection { implicit connection =>
+      SQL("delete from BESTNLAPS").executeUpdate()
+    }
+  }
+
   def findAll(): Seq[BestNLaps] = {
     DB.withConnection { implicit connection =>
       SQL("select * from BESTNLAPS order by totalTime").as(BestNLaps.simple *)

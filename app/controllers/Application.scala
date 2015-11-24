@@ -4,7 +4,7 @@ package controllers
 import java.time.LocalDate
 
 import com.google.gson.Gson
-import models.Lap
+import models.{BestMinutes, BestNLaps, CurrentRacer, Lap}
 import org.slf4j.LoggerFactory
 import play.api.mvc.{Action, Controller}
 
@@ -17,7 +17,8 @@ class Application extends Controller {
 
 
   def index = Action {
-    Ok(views.html.index(manager.getCurrentRacers(), manager.getBestNLaps(NR_OF_LAPS), manager.getBestFiveMinutes(), LocalDate.now().toString))
+    val rec = manager.getRecord()
+    Ok(views.html.index(manager.getCurrentRacers(), manager.getBestNLaps(NR_OF_LAPS), manager.getBestFiveMinutes(), LocalDate.now().toString, rec._1, rec._2, rec._3))
   }
 
   def addLap = Action(parse.json) {
@@ -54,7 +55,10 @@ class Application extends Controller {
   def deleteAll() = Action {
     println("deleting all...")
     Lap.deleteAll()
-    println("all deleted remaining: " + Lap.findAll().length)
+    CurrentRacer.deleteAll()
+    BestNLaps.deleteAll()
+    BestMinutes.deleteAll()
+    println("all deleted")
     Redirect(routes.Application.index())
   }
 }

@@ -40,6 +40,12 @@ object CurrentRacer {
     }
   }
 
+  def deleteAll() = {
+    DB.withConnection { implicit connection =>
+      SQL("delete from CURRENTRACER").executeUpdate()
+    }
+  }
+
   def create(record: CurrentRacer): Unit = {
     DB.withConnection { implicit connection =>
       SQL("insert into CURRENTRACER values ({driver},{transponder},{lapNr},{lapTime},{fastest},{bestN},{bestFive},{tsPres})").on(

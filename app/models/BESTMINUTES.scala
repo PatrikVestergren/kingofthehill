@@ -60,6 +60,12 @@ object BestMinutes {
     }
   }
 
+  def deleteAll() = {
+    DB.withConnection { implicit connection =>
+      SQL("delete from BESTMINUTES").executeUpdate()
+    }
+  }
+
   def create(record: BestMinutes): Unit = {
     DB.withConnection { implicit connection =>
       SQL("insert into BESTMINUTES values ({driver},{transponder},{laps},{totalTime},{result},{tsPres})").on(
