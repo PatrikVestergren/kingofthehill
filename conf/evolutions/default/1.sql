@@ -40,7 +40,7 @@ CREATE TABLE CURRENTRACER (
   tsPres                    VARCHAR(25),
   ts                        DATE default now() NOT NULL
 );
-# --- DATE without time zone default now() NOT NULL
+
 # --- !Downs
 
 DROP TABLE IF EXISTS LAP;
