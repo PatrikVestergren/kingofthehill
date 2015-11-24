@@ -1,6 +1,3 @@
-# --- First database schema
-
-# --- !Ups
 
 CREATE TABLE LAP (
   driver                    VARCHAR(255) NOT NULL,
@@ -40,8 +37,6 @@ CREATE TABLE CURRENTRACER (
   tsPres                    VARCHAR(25),
   ts                        DATE default now() NOT NULL
 );
-
-# --- !Downs
 
 DROP TABLE IF EXISTS LAP;
 DROP TABLE IF EXISTS BESTNLAPS;
