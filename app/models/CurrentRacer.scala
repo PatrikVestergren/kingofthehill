@@ -40,14 +40,6 @@ object CurrentRacer {
     }
   }
 
-//  SELECT
-//  customer_id,
-//  COUNT (customer_id)
-//  FROM
-//  payment
-//  GROUP BY
-//    customer_id;
-
   def create(record: CurrentRacer): Unit = {
     DB.withConnection { implicit connection =>
       SQL("insert into CURRENTRACER values ({driver},{transponder},{lapNr},{lapTime},{fastest},{bestN},{bestFive},{tsPres})").on(
