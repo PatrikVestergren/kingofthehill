@@ -1,8 +1,6 @@
 package controllers
 
-import java.util.{Calendar, Date}
-
-import models.{CurrentRacer, BestMinutes, Lap}
+import models.{BestMinutes, CurrentRacer, Lap}
 
 /**
   * Created by patrikv on 05/11/15.
@@ -10,7 +8,6 @@ import models.{CurrentRacer, BestMinutes, Lap}
 case class Calculator() {
 
   val fiveMinutes = 300000
-  val cal = Calendar.getInstance()
 
   def getBestNLapsTime(s: Seq[Lap], nrOfLaps: Int): Long = {
     if (s.length < nrOfLaps) return 0
@@ -71,8 +68,6 @@ case class Calculator() {
     sumSeq(s.tail, (acc._1 :+ s.head, acc._2 + s.head.lapTime))
   }
 
-  //def sortBestTime(a: BestNLaps, b: BestNLaps) = a.time.toLong < b.time.toLong
-
   def sortNrOfLaps(a: CurrentRacer, b: CurrentRacer) = a.lapNr > b.lapNr
   def sortNrOfLaps(a: Lap, b: Lap) = a.lapNr > b.lapNr
   def sortNrOfLaps(a: DriverLap, b: DriverLap) = a.lapNr < b.lapNr
@@ -97,28 +92,6 @@ case class Calculator() {
     if (a.laps == b.laps) {
       a.totalTime < b.totalTime
     } else byLaps(a, b)
-  }
-
-//  def isToday(lap: CurrentLap): Boolean = {
-////    val lapDate = Calendar.getInstance();
-////    lapDate.setTimeInMillis(lap.ts.getTime)
-////    lapDate.getTime.after(getStartOfDay())
-//    true
-//  }
-
-  def isTodayForLap(lap: Lap): Boolean = {
-    val lapDate = Calendar.getInstance();
-    lapDate.setTimeInMillis(lap.ts.toEpochDay)
-    lapDate.getTime.after(getStartOfDay())
-  }
-
-  def getStartOfDay(): Date = {
-    val calendar = Calendar.getInstance()
-    calendar.set(Calendar.HOUR_OF_DAY, 0)
-    calendar.set(Calendar.MINUTE, 0)
-    calendar.set(Calendar.SECOND, 0)
-    calendar.set(Calendar.MILLISECOND, 0)
-    calendar.getTime
   }
 
 }
