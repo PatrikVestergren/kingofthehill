@@ -88,7 +88,7 @@ class Manager(nrOfLaps: Int) {
 
     if (racers.size < 15) {
       val padding = ListBuffer[CurrentRacer]()
-      for (i <- racers.size until 15) padding += CurrentRacer("", 0, 0, "-", "-", "-", "-", "-", null)
+      for (i <- racers.size until 15) padding += CurrentRacer("-", 0, 0, "-", "-", "-", "-", "-", null)
       return racers ++ padding
     }
     return racers
@@ -115,7 +115,7 @@ class Manager(nrOfLaps: Int) {
 
     if (sorted.length < 10) {
       val padding = ListBuffer[BestMinutes]()
-      for (i <- sorted.size until 10) padding += BestMinutes("", 0, 0, 0, "-", "-", null)
+      for (i <- sorted.size until 10) padding += BestMinutes("-", 0, 0, 0, "-", "-", null)
       return sorted ++ padding
     }
     else if (sorted.length > 10) return sorted.slice(0, 10)
