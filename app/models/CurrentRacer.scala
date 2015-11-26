@@ -36,7 +36,7 @@ object CurrentRacer {
 
   def getLatest(): Seq[CurrentRacer] = {
     DB.withConnection { implicit connection =>
-      SQL("select distinct on (transponder) * from CURRENTRACER order by transponder, lapNr DESC").as(CurrentRacer.simple *)
+      SQL("select distinct on (transponder) * from CURRENTRACER WHERE ts = (SELECT TIMESTAMP 'today') order by transponder, lapNr DESC").as(CurrentRacer.simple *)
     }
   }
 
