@@ -51,12 +51,13 @@ case class Calculator() {
     return b
   }
 
-  def bestFiveSingle(a: (Int, Long), b: (Int, Long)): (Int, Long) = {
-    if (a._1 > b._1) return a
+  // True if a better than b, false otherwise
+  def isBetterFive(a: (Int, Long), b: (Int, Long)): Boolean = {
+    if (a._1 > b._1) return true
     else if (a._1 == b._1) {
-      if (a._2 < b._2) return a
+      if (a._2 < b._2) return true
     }
-    return b
+    return false
   }
 
   def sumSeq(s: Seq[Lap], acc: (Seq[Lap], Long)): (Seq[Lap], Long) = {

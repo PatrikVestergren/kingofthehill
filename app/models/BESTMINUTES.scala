@@ -4,7 +4,6 @@ import java.time.LocalDate
 
 import anorm.SqlParser._
 import anorm._
-import controllers.Calculator
 import play.api.Play.current
 import play.api.db.DB
 
@@ -14,14 +13,6 @@ import play.api.db.DB
 case class BestMinutes(driver: String, transponder: Long, laps: Int, totalTime: Long, result: String, tsPres: String, ts: LocalDate)
 
 object BestMinutes {
-
-  val calculator = new Calculator()
-  def isBetter(a: (Seq[Lap], Long), b: List[BestMinutes]): Boolean = {
-    if (b.isEmpty) return true
-    if (a._1.length == b.head.laps && a._2 == b.head.totalTime) return false
-    val best = calculator.bestFiveSingle((a._1.length, a._2), (b.head.laps, b.head.totalTime))
-    a._1.length == best._1 && a._2 == best._2
-  }
 
   val simple = {
     get[String]("driver") ~

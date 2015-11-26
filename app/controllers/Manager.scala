@@ -44,7 +44,7 @@ class Manager(nrOfLaps: Int) {
       val bestFiveDb = BestMinutes.bestFor(transponder)
       if (bestFiveDb.isEmpty) {
         BestMinutes.create(BestMinutes(driver, transponder, bestMin._1.length, bestMin._2, bestMin._1.length + "/" + formatTime(bestMin._2), lap.ts.toString, lap.ts))
-      } else if (BestMinutes.isBetter(bestMin, bestFiveDb)) {
+      } else if (calculator.isBetterFive((bestMin._1.length, bestMin._2), (bestFiveDb.head.laps, bestFiveDb.head.totalTime))) {
         BestMinutes.update(BestMinutes(driver, transponder, bestMin._1.length, bestMin._2, bestMin._1.length + "/" + formatTime(bestMin._2), lap.ts.toString, lap.ts))
       }
     }
