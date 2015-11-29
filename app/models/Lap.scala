@@ -47,7 +47,7 @@ object Lap {
 
   def trackRecordTodayFor(t: Long) = {
     DB.withConnection { implicit connection =>
-      SQL(s"SELECT * FROM LAP WHERE lapTime = (SELECT min(lapTime) from LAP WHERE transponder=$t AND ts = (SELECT TIMESTAMP 'today') AND transponder=$t").as(Lap.simple *)
+      SQL(s"SELECT * FROM LAP WHERE lapTime = (SELECT min(lapTime) from LAP WHERE transponder=$t AND ts = (SELECT TIMESTAMP 'today')) AND transponder=$t").as(Lap.simple *)
     }
   }
 
