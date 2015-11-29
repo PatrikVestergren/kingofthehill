@@ -5,6 +5,7 @@ package models
  */
 
 
+import java.sql.Date
 import java.time.LocalDate
 
 import anorm.SqlParser._
@@ -38,15 +39,21 @@ object Lap {
     }
   }
 
-  def trackRecordTodayFor(t: Long) = {
+  def trackRecordForAtDay(t: Long, d: String) = {
     DB.withConnection { implicit connection =>
-      SQL(s"SELECT * FROM LAP WHERE lapTime = (SELECT min(lapTime) from LAP WHERE transponder=$t AND ts = (SELECT TIMESTAMP 'today')) AND transponder=$t").as(Lap.simple *)
+      SQL(s"SELECT * FROM LAP WHERE lapTime = (SELECT min(lapTime) from LAP WHERE transponder=$t AND ts=to_date('$d', 'YYYY MM DD')) AND transponder=$t").as(Lap.simple *)
     }
   }
 
-  def lapsTodayFor(t: Long) = {
+  def trackRecordTodayFor(t: Long) = {
     DB.withConnection { implicit connection =>
-      SQL(s"SELECT * FROM LAP WHERE transponder=$t AND ts = (SELECT TIMESTAMP 'today') ORDER BY lapNr").as(Lap.simple *)
+      SQL(s"SELECT * FROM LAP WHERE lapTime = (SELECT min(lapTime) from LAP WHERE transponder=$t AND ts = (SELECT TIMESTAMP 'today') AND transponder=$t").as(Lap.simple *)
+    }
+  }
+
+  def lapsForDriverAtDate(t: Long, atDate: String) = {
+    DB.withConnection { implicit connection =>
+      SQL(s"SELECT * FROM LAP WHERE transponder=$t AND ts=to_date('$atDate', 'YYYY MM DD') ORDER BY lapNr").as(Lap.simple *)
     }
   }
 

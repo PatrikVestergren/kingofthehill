@@ -1,7 +1,6 @@
 package controllers
 
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 
 import models.{BestMinutes, BestNLaps, CurrentRacer, Lap}
 
@@ -13,7 +12,7 @@ import scala.collection.mutable.ListBuffer
 class Manager(nrOfLaps: Int) {
 
   val format = new SimpleDateFormat("yyyy-MM-dd")
-  val format2 = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+  //val format2 = DateTimeFormatter.ofPattern("yyyy-MM-dd")
   val calculator = new Calculator
   val lapFormat = new SimpleDateFormat("mm:ss.SSS")
 
@@ -28,7 +27,7 @@ class Manager(nrOfLaps: Int) {
 
     Lap.create(lap)
 
-    val todays = Lap.lapsTodayFor(transponder)
+    val todays = Lap.lapsForDriverAtDate(transponder, lap.ts.toString)
     val bestThree = calculator.getBestNLapsTime(todays, nrOfLaps)
     if (bestThree > 0) {
       val bestThreeDb = BestNLaps.bestFor(transponder)
@@ -53,23 +52,23 @@ class Manager(nrOfLaps: Int) {
     CurrentRacer.create(c)
   }
 
-  def getTodaysLapsFor(t: Long): (Seq[DriverLap], String, String) = {
+  def getTodaysLapsFor(t: Long, day: String): (Seq[DriverLap], String, String) = {
 
-    val todays = Lap.lapsTodayFor(t)
+    val laps = Lap.lapsForDriverAtDate(t, day)
 
-    if (todays.isEmpty) {
+    if (laps.isEmpty) {
       return (Seq(), "", "")
     }
 
-    val transponder = todays.head.transponder
-    val driver = todays.head.driver
-    val bestLap = Lap.trackRecordTodayFor(t)
+    val transponder = laps.head.transponder
+    val driver = laps.head.driver
+    val bestLap = Lap.trackRecordForAtDay(t, day)
 
-    val bestN = calculator.getBestNLaps(todays, nrOfLaps)
+    val bestN = calculator.getBestNLaps(laps, nrOfLaps)
     val bestNTime = bestN.view.map(_.lapTime).sum
-    val bestFive = calculator.getBestFiveMinutes(todays)
+    val bestFive = calculator.getBestFiveMinutes(laps)
 
-    val result = for (lap <- todays) yield DriverLap(driver, transponder, lap.lapNr, formatTime(lap.lapTime), calcClass(lap.lapNr, bestLap.head, bestN, bestFive))
+    val result = for (lap <- laps) yield DriverLap(driver, transponder, lap.lapNr, formatTime(lap.lapTime), calcClass(lap.lapNr, bestLap.head, bestN, bestFive))
 
     val b = result.sortWith(calculator.sortNrOfLaps)
     (b.distinct, formatTime(bestNTime), bestFive._1.length + "/" + formatTime(bestFive._2))

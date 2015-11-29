@@ -21,7 +21,7 @@
                     @for(lap <- laps) {
                         <tr class="row">
                             <td class="laps">@lap.lapNr</td>
-                            <td class="driver"><a href="@routes.Application.lapsFor(lap.transponder)">@lap.driver</a></td>
+                            <td class="driver"><a href="@routes.Application.lapsFor(lap.transponder, date)">@lap.driver</a></td>
                             <td class="col">@lap.lapTime</td>
                             <td class="col">@lap.fastest</td>
                             <td class="col">@lap.bestN</td>
@@ -53,7 +53,7 @@
         @for((lap, index) <- bestLaps.zipWithIndex) {
         <tr class="row">
             <td class="pos">@{index+1}</td>
-            <td class="driver">@lap.driver</td>
+            <td class="driver"><a href="@routes.Application.lapsFor(lap.transponder, lap.tsPres)">@lap.driver</a></td>
             <td class="col">@lap.totalTimePres</td>
             <td class="col">@lap.tsPres</td>
         </tr>
@@ -82,7 +82,7 @@
             @for((lap, index) <- bestMinutes.zipWithIndex) {
             <tr class="row">
                 <td class="pos">@{index+1}</td>
-                <td class="driver">@lap.driver</td>
+                <td class="driver"><a href="@routes.Application.lapsFor(lap.transponder, lap.tsPres)">@lap.driver</a></td>
                 <td class="col">@lap.result</td>
                 <td class="col">@lap.tsPres</td>
             </tr>

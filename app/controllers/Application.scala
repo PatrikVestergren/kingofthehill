@@ -43,12 +43,12 @@ class Application extends Controller {
     Ok(json).as("application/json")
   }
 
-  def lapsFor(transponder: Long) = Action {
+  def lapsFor(transponder: Long, day: String) = Action {
     if (transponder == 0) Redirect(routes.Application.index())
     else {
-      val laps = manager.getTodaysLapsFor(transponder.toLong)
+      val laps = manager.getTodaysLapsFor(transponder.toLong, day)
       val title = if (laps._1.size > 0) laps._1.head.name + " [" + transponder + "]" else "-"
-      Ok(views.html.lapsFor(laps._1, laps._2, laps._3, title))
+      Ok(views.html.lapsFor(laps._1, laps._2, laps._3, title, day))
     }
   }
 

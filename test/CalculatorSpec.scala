@@ -1,3 +1,4 @@
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 
 import models.{BestMinutes, Lap}
@@ -140,6 +141,33 @@ class CalculatorSpec extends FlatSpec with Matchers {
     calculator.isBetterFive((0, 350000), (1, 350000)) should be(false)
     calculator.isBetterFive((17, 350000), (17, 350001)) should be(true)
     calculator.isBetterFive((17, 350001), (17, 350000)) should be(false)
+    calculator.isBetterFive((17, 350000), (17, 350000)) should be(false)
+  }
+  val lapFormat = new SimpleDateFormat("mm:ss.SSS")
+
+  def formatTime(x: Long): String = lapFormat.format(x)
+  it should "da da da" in {
+    val s = List(19991,23047,19793,19682,19400,19351,19548,20160,20081,19350,19936,20989,20003,19357,19211,136255)
+    println(s.length + " : " + s.sum)
+      val l = Seq(Lap("driver", 123, 77,	26087, null),
+      Lap("driver", 123, 78,	19991, null),
+      Lap("driver", 123, 79,	23047, null),
+      Lap("driver", 123, 80,	19793, null),
+      Lap("driver", 123, 81,	19682, null),
+      Lap("driver", 123, 82,	19400, null),
+      Lap("driver", 123, 83,	19351, null),
+      Lap("driver", 123, 84,	19548, null),
+      Lap("driver", 123, 85,	20160, null),
+      Lap("driver", 123, 86,	20081, null),
+      Lap("driver", 123, 87,	19350, null),
+      Lap("driver", 123, 88,	19936, null),
+      Lap("driver", 123, 89,	20989, null),
+      Lap("driver", 123, 90,	20003, null),
+      Lap("driver", 123, 91,	19357, null),
+      Lap("driver", 123, 92,	19211, null))
+     /* Lap("driver", 123, 93, 136255, null))*/
+val res = calculator.getBestFiveMinutes(l)
+    println(res._1.length + "/" + formatTime(res._2))
   }
 
 }
