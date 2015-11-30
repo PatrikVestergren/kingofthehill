@@ -17,8 +17,15 @@ class Application extends Controller {
 
 
   def index = Action {
-    val rec = manager.getRecord()
-    Ok(views.html.index(manager.getCurrentRacers(), manager.getBestNLaps(NR_OF_LAPS), manager.getBestFiveMinutes(), LocalDate.now().toString, rec._1, rec._2, rec._3))
+    val laps = manager.getBestNLaps(NR_OF_LAPS)
+    val laps_two = laps._1
+    val laps_four = laps._2
+    val laps_none = laps._3
+    val minutes = manager.getBestFiveMinutes()
+    val min_two = minutes._1
+    val min_four = minutes._2
+    val min_none = minutes._3
+    Ok(views.html.index(manager.getCurrentRacers(), laps_two, laps_four, laps_none, min_two, min_four, min_none, LocalDate.now().toString))
   }
 
   def addLap = Action(parse.json) {

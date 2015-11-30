@@ -1,6 +1,7 @@
 package controllers
 
 import java.text.SimpleDateFormat
+import java.util.regex.Pattern
 
 import models.{BestMinutes, BestNLaps, CurrentRacer, Lap}
 
@@ -12,9 +13,10 @@ import scala.collection.mutable.ListBuffer
 class Manager(nrOfLaps: Int) {
 
   val format = new SimpleDateFormat("yyyy-MM-dd")
-  //val format2 = DateTimeFormatter.ofPattern("yyyy-MM-dd")
   val calculator = new Calculator
   val lapFormat = new SimpleDateFormat("mm:ss.SSS")
+  val twoWD = Pattern.compile("2wd", Pattern.CASE_INSENSITIVE)
+  val fourWD = Pattern.compile("4wd", Pattern.CASE_INSENSITIVE)
 
   def formatTime(x: Long): String = lapFormat.format(x)
 
@@ -85,33 +87,48 @@ class Manager(nrOfLaps: Int) {
 
     val racers = CurrentRacer.getLatest().sortWith(calculator.sortNrOfLaps)
 
-    if (racers.size < 15) {
+    if (racers.size < 35) {
       val padding = ListBuffer[CurrentRacer]()
-      for (i <- racers.size until 15) padding += CurrentRacer("-", 0, 0, "-", "-", "-", "-", "-", null)
+      for (i <- racers.size until 35) padding += CurrentRacer("-", 0, 0, "-", "-", "-", "-", "-", null)
       return racers ++ padding
     }
     return racers
   }
 
-  def getBestNLaps(laps: Int): Seq[BestNLaps] = {
+  def getBestNLaps(laps: Int): (Seq[BestNLaps],Seq[BestNLaps],Seq[BestNLaps]) = {
 
-    val pres = BestNLaps.findAll()
+    val all = BestNLaps.findAll()
+    val two = all.filter(x => twoWD.matcher(x.driver).find())
+    val four = all.filter(x => fourWD.matcher(x.driver).find())
+    val none = all.filterNot(x => twoWD.matcher(x.driver).find()).filterNot(x => fourWD.matcher(x.driver).find())
 
-    if (pres.length < 10) {
-      val padding = ListBuffer[BestNLaps]()
-      for (i <- pres.size until 10) padding += BestNLaps("-", 0, 0, "-", "-", null)
-      return pres ++ padding
-    }
-    else if (pres.length > 10) return pres.slice(0, 10)
-    else return pres
+    return (fixList(two), fixList(four), fixList(none))
   }
 
-  def getBestFiveMinutes(): Seq[BestMinutes] = {
+  def fixList(laps: Seq[BestNLaps]): Seq[BestNLaps] = {
+    if (laps.length < 10) {
+      val padding = ListBuffer[BestNLaps]()
+      for (i <- laps.size until 10) padding += BestNLaps("-", 0, 0, "-", "-", null)
+      return laps ++ padding
+    }
+    else if (laps.length > 10) return laps.slice(0, 10)
+    else return laps
+  }
+
+  def getBestFiveMinutes(): (Seq[BestMinutes],Seq[BestMinutes],Seq[BestMinutes]) = {
 
     val best = BestMinutes.findAll()
 
     val sorted = calculator.sortBestFive(best.toList)
+    val two = sorted.filter(x => twoWD.matcher(x.driver).find())
+    val four = sorted.filter(x => fourWD.matcher(x.driver).find())
+    val none = sorted.filterNot(x => twoWD.matcher(x.driver).find()).filterNot(x => fourWD.matcher(x.driver).find())
 
+    return (fixMinutes(two), fixMinutes(four), fixMinutes(none))
+
+  }
+
+  def fixMinutes(sorted: List[BestMinutes]): Seq[BestMinutes] = {
     if (sorted.length < 10) {
       val padding = ListBuffer[BestMinutes]()
       for (i <- sorted.size until 10) padding += BestMinutes("-", 0, 0, 0, "-", "-", null)
@@ -119,7 +136,6 @@ class Manager(nrOfLaps: Int) {
     }
     else if (sorted.length > 10) return sorted.slice(0, 10)
     else return sorted
-
   }
 
   def getRecord(): (String, String, String) = {

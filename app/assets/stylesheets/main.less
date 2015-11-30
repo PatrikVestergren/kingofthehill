@@ -1,9 +1,3 @@
-/* Mixin */
-.border-radius (@radius: 5px) {
-	-webkit-border-radius: @radius;
-	-moz-border-radius: @radius;
-	border-radius: @radius;
-}
 
 @color-black_dark: #3B3738;
 
@@ -45,50 +39,59 @@ h3 {
 	margin-bottom:.1em;
 }
 
-/*tr:nth-child(even) {background: @lighter1}
-tr:nth-child(odd) {background: @lighter2}*/
-
 table {
-    border-collapse: collapse;
     width: 99%;
     margin: 0 auto;
 }
 
-.main {
-    width: 100%;
-    margin: 0 auto;
-    padding-top: 50px;
-    padding-left: 20px;
-    position: relative;
+.container {
+      padding: 0;
+      margin: 0;
+      list-style: none;
 
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+
+      -webkit-flex-flow: row wrap;
+      justify-content: space-around;
 }
 
-.record {
-    padding-left: 25px;
-    font-size: @font-larger3;
+.columnCurrent {
+    flex: 2;
+    border-right: 2px solid #190654;
 }
-
-.currentCont {
-    width: 995px;
-    padding:5px;
+.column {
+    flex: 1;
 }
 
 table.current tr:hover td {
     background-color: #b8d1f3;
 }
 
-.bestLapsCont {
-    width: 500px;
-    float:left;
-}
-table.bestLaps tr:hover td {
+table.bestLaps2wd tr:hover td {
     background-color: #b8d1f3;
 }
-.bestFiveCont{
-    width: 500px;
-    float:left;
+
+table.bestLaps4wd tr:hover td {
+    background-color: #b8d1f3;
 }
-table.bestMinutes tr:hover td {
+
+table.bestLapsUnknown tr:hover td {
+    background-color: #b8d1f3;
+}
+
+table.bestMinutes2wd tr:hover td {
+    background-color: #b8d1f3;
+}
+
+table.bestMinutes4wd tr:hover td {
+    background-color: #b8d1f3;
+}
+
+table.bestMinutesUnknown tr:hover td {
     background-color: #b8d1f3;
 }
 
@@ -98,8 +101,8 @@ table.bestMinutes tr:hover td {
     font-size: @font-larger1;
     color: @base;
     background: #190654;
-    border-bottom: dotted @base;
     border-width: 1px;
+    flex: 1;
 }
 
 .tableFoot {
@@ -124,10 +127,11 @@ tr.row {
 .pos {
     text-align: right;
     padding-right: 10px;
+    padding-top: 0px;
+    padding-bottom: 0px;
     font-size: @font-larger3;
     font-family: Impact, Charcoal, sans-serif;
     color: @color-black_dark;
-    width: 30px;
 }
 
 .laps {
@@ -135,14 +139,12 @@ tr.row {
         padding-left: 10px;
         font-size: @font-larger2;
         color: @color-black_dark;
-        width: 30px;
+        width: 10px;
 }
 
 .driver {
     text-align: left;
     padding-left: 10px;
-    font-size: @font-larger3;
-    font-family: Georgia, serif;
 }
 
 .colwidth {

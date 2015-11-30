@@ -1,97 +1,185 @@
-@(laps: Seq[CurrentRacer], bestLaps: Seq[BestNLaps], bestMinutes: Seq[BestMinutes], date: String, record: String, recordHolder: String, recordDate: String)
-
+@(laps: Seq[CurrentRacer], bestLaps2wd: Seq[BestNLaps], bestLaps4wd: Seq[BestNLaps], bestLapsUnknown: Seq[BestNLaps], bestMinutes2wd: Seq[BestMinutes], bestMinutes4wd: Seq[BestMinutes], bestMinutesUnknown: Seq[BestMinutes], date: String)
 @main("King of the Hill") {
-<!--div class="record">Track: Evolution Raceway Record: @record hold by @recordHolder (@recordDate)</div-->
-        <div class="currentCont">
-            <table class="current">
-                <thead>
-                    <tr>
-                       <th class="tableHead" colspan="6">Current Race - @date</th>
-                    </tr>
-                    <tr id="content">
-                        <th class="colHead">Laps</th>
-                        <th class="colHead">Driver</th>
-                        <th class="colHead colwidth">Time</th>
-                        <th class="colHead colwidth">Fast Lap</th>
-                        <th class="colHead colwidth">Best 3 Laps</th>
-                        <th class="colHead colwidth">Best 5 Minutes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for(lap <- laps) {
-                        <tr class="row">
-                            <td class="laps">@lap.lapNr</td>
-                            <td class="driver"><a href="@routes.Application.lapsFor(lap.transponder, date)">@lap.driver</a></td>
-                            <td class="col">@lap.lapTime</td>
-                            <td class="col">@lap.fastest</td>
-                            <td class="col">@lap.bestN</td>
-                            <td class="col">@lap.bestFive</td>
-                        </tr>
-                    }
-
-                </tbody>
-                <tr>
-                    <th class="tableFoot" colspan="6">Footer</th>
-                </tr>
-            </table>
-         </div>
-
-    <div class="bestLapsCont">
-    <table class="bestLaps">
-        <thead>
-        <tr>
-            <th class="tableHead" colspan="4">Best 3 Laps</th>
-        </tr>
-        <tr id="content">
-            <th class="colHead">Pos.</th>
-            <th class="colHead">Driver</th>
-            <th class="colHead colwidth">Time</th>
-            <th class="colHead colwidth">Date</th>
-        </tr>
-        </thead>
-        <tbody>
-        @for((lap, index) <- bestLaps.zipWithIndex) {
-        <tr class="row">
-            <td class="pos">@{index+1}</td>
-            <td class="driver"><a href="@routes.Application.lapsFor(lap.transponder, lap.tsPres)">@lap.driver</a></td>
-            <td class="col">@lap.totalTimePres</td>
-            <td class="col">@lap.tsPres</td>
-        </tr>
-        }
-
-        </tbody>
-        <tr>
-            <th class="tableFoot" colspan="4">Footer</th>
-        </tr>
-    </table>
-    </div>
-    <div class="bestFiveCont">
-        <table class="bestMinutes">
+<div class="container">
+    <div class="columnCurrent">
+        <table class="current">
             <thead>
             <tr>
-                <th class="tableHead" colspan="4">Best 5 Minutes</th>
+                <th class="tableHead" colspan="6">Current Race - @date</th>
+            </tr>
+            <tr id="content">
+                <th class="colHead">Laps</th>
+                <th class="colHead">Driver</th>
+                <th class="colHead colwidth">Time</th>
+                <th class="colHead colwidth">Fast Lap</th>
+                <th class="colHead colwidth">Best 3 Laps</th>
+                <th class="colHead colwidth">Best 5 Minutes</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for(lap <- laps) {
+            <tr class="row">
+                <td class="laps">@lap.lapNr</td>
+                <td class="driver"><a href="@routes.Application.lapsFor(lap.transponder, date)">@lap.driver</a></td>
+                <td class="col">@lap.lapTime</td>
+                <td class="col">@lap.fastest</td>
+                <td class="col">@lap.bestN</td>
+                <td class="col">@lap.bestFive</td>
+            </tr>
+            }
+            </tbody>
+            <tr>
+                <th class="tableFoot" colspan="6">Footer</th>
+            </tr>
+        </table>
+    </div>
+    <div class="column">
+        <table class="bestLaps2wd">
+            <thead>
+            <tr>
+                <th class="tableHead" colspan="3">Best 3 Laps - 2wd</th>
+            </tr>
+            <tr id="content">
+                <th class="colHead">Pos.</th>
+                <th class="colHead">Driver</th>
+                <th class="colHead colwidth">Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for((lap, index) <- bestLaps2wd.zipWithIndex) {
+            <tr class="row">
+                <td class="pos">@{index+1}</td>
+                <td class="driver"><a href="@routes.Application.lapsFor(lap.transponder, lap.tsPres)">@lap.driver</a></td>
+                <td class="col">@lap.totalTimePres</td>
+            </tr>
+            }
+            </tbody>
+            <tr>
+                <th class="tableFoot" colspan="3">Footer</th>
+            </tr>
+        </table>
+        <table class="bestLaps4wd">
+            <thead>
+            <tr>
+                <th class="tableHead" colspan="3">Best 3 Laps - 4wd</th>
+            </tr>
+            <tr id="content">
+                <th class="colHead">Pos.</th>
+                <th class="colHead">Driver</th>
+                <th class="colHead colwidth">Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for((lap, index) <- bestLaps4wd.zipWithIndex) {
+            <tr class="row">
+                <td class="pos">@{index+1}</td>
+                <td class="driver"><a href="@routes.Application.lapsFor(lap.transponder, lap.tsPres)">@lap.driver</a></td>
+                <td class="col">@lap.totalTimePres</td>
+            </tr>
+            }
+            </tbody>
+            <tr>
+                <th class="tableFoot" colspan="3">Footer</th>
+            </tr>
+        </table>
+        <table class="bestLapsUnknown">
+            <thead>
+            <tr>
+                <th class="tableHead" colspan="3">Best 3 Laps - others</th>
+            </tr>
+            <tr id="content">
+                <th class="colHead">Pos.</th>
+                <th class="colHead">Driver</th>
+                <th class="colHead colwidth">Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for((lap, index) <- bestLapsUnknown.zipWithIndex) {
+            <tr class="row">
+                <td class="pos">@{index+1}</td>
+                <td class="driver"><a href="@routes.Application.lapsFor(lap.transponder, lap.tsPres)">@lap.driver</a></td>
+                <td class="col">@lap.totalTimePres</td>
+            </tr>
+            }
+            </tbody>
+            <tr>
+                <th class="tableFoot" colspan="3">Footer</th>
+            </tr>
+        </table>
+    </div>
+    <div class="column">
+        <table class="bestMinutes2wd">
+            <thead>
+            <tr>
+                <th class="tableHead" colspan="3">Best 5 Minutes - 2wd</th>
             </tr>
             <tr id="content">
                 <th class="colHead">Pos.</th>
                 <th class="colHead">Driver</th>
                 <th class="colHead colwidth">Result</th>
-                <th class="colHead colwidth">Date</th>
             </tr>
             </thead>
             <tbody>
-            @for((lap, index) <- bestMinutes.zipWithIndex) {
+            @for((lap, index) <- bestMinutes2wd.zipWithIndex) {
             <tr class="row">
                 <td class="pos">@{index+1}</td>
                 <td class="driver"><a href="@routes.Application.lapsFor(lap.transponder, lap.tsPres)">@lap.driver</a></td>
                 <td class="col">@lap.result</td>
-                <td class="col">@lap.tsPres</td>
             </tr>
             }
-
             </tbody>
             <tr>
-                <th class="tableFoot" colspan="4">Footer</th>
+                <th class="tableFoot" colspan="3">Footer</th>
+            </tr>
+        </table>
+        <table class="bestMinutes4wd">
+            <thead>
+            <tr>
+                <th class="tableHead" colspan="3">Best 5 Minutes - 4wd</th>
+            </tr>
+            <tr id="content">
+                <th class="colHead">Pos.</th>
+                <th class="colHead">Driver</th>
+                <th class="colHead colwidth">Result</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for((lap, index) <- bestMinutes4wd.zipWithIndex) {
+            <tr class="row">
+                <td class="pos">@{index+1}</td>
+                <td class="driver"><a href="@routes.Application.lapsFor(lap.transponder, lap.tsPres)">@lap.driver</a></td>
+                <td class="col">@lap.result</td>
+            </tr>
+            }
+            </tbody>
+            <tr>
+                <th class="tableFoot" colspan="3">Footer</th>
+            </tr>
+        </table>
+        <table class="bestMinutesUnknown">
+            <thead>
+            <tr>
+                <th class="tableHead" colspan="3">Best 5 Minutes - others</th>
+            </tr>
+            <tr id="content">
+                <th class="colHead">Pos.</th>
+                <th class="colHead">Driver</th>
+                <th class="colHead colwidth">Result</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for((lap, index) <- bestMinutesUnknown.zipWithIndex) {
+            <tr class="row">
+                <td class="pos">@{index+1}</td>
+                <td class="driver"><a href="@routes.Application.lapsFor(lap.transponder, lap.tsPres)">@lap.driver</a></td>
+                <td class="col">@lap.result</td>
+            </tr>
+            }
+            </tbody>
+            <tr>
+                <th class="tableFoot" colspan="3">Footer</th>
             </tr>
         </table>
     </div>
+</div>
 }
