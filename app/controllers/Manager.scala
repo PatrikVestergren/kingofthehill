@@ -100,7 +100,7 @@ class Manager(nrOfLaps: Int) {
     val all = BestNLaps.findAll()
     val two = all.filter(x => twoWD.matcher(x.driver).find())
     val four = all.filter(x => fourWD.matcher(x.driver).find())
-    val none = all.filterNot(x => twoWD.matcher(x.driver).find()).filterNot(x => fourWD.matcher(x.driver).find())
+    val none = all.filterNot(x => twoWD.matcher(x.driver).find() || fourWD.matcher(x.driver).find())
 
     return (fixList(two), fixList(four), fixList(none))
   }
@@ -122,7 +122,7 @@ class Manager(nrOfLaps: Int) {
     val sorted = calculator.sortBestFive(best.toList)
     val two = sorted.filter(x => twoWD.matcher(x.driver).find())
     val four = sorted.filter(x => fourWD.matcher(x.driver).find())
-    val none = sorted.filterNot(x => twoWD.matcher(x.driver).find()).filterNot(x => fourWD.matcher(x.driver).find())
+    val none = sorted.filterNot(x => twoWD.matcher(x.driver).find() || fourWD.matcher(x.driver).find())
 
     return (fixMinutes(two), fixMinutes(four), fixMinutes(none))
 
