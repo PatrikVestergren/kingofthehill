@@ -60,13 +60,6 @@ table {
       justify-content: space-around;
 }
 
-@media screen and (max-width: 800px) {
-.container {
-    /* On small screens, we are no longer using row direction but column */
-    -webkit-flex-flow: column wrap;
-  }
-}
-
 .columnCurrent {
     flex: 2;
     border-right: 2px solid #190654;
@@ -212,4 +205,17 @@ a:hover {
 
 a:active {
     color: #7E8F7C;
+}
+
+@media screen and (max-width: 800px) {
+    .container {
+        /* On small screens, we are no longer using row direction but column */
+        -webkit-flex-flow: column wrap;
+    }
+    .columnCurrent {
+        flex: 1;
+    }
+    .column {
+        flex: 1;
+    }
 }
