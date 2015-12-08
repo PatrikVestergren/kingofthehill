@@ -1,4 +1,3 @@
-window.setInterval("refreshDiv()", 500);
 
 function refreshDiv() {
     $('.current').load(document.URL +  ' .current');
@@ -9,3 +8,9 @@ function refreshDiv() {
     $('.bestLapsUnknown').load(document.URL +  ' .bestLapsUnknown');
     $('.bestMinutesUnknown').load(document.URL +  ' .bestMinutesUnknown');
 }
+
+var event = new EventSource("/updates");
+   event.addEventListener('message', function( event ) {
+       refreshDiv();
+   }
+,false);

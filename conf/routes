@@ -4,8 +4,13 @@
 
 # Home page
 GET     /                           controllers.Application.index
-GET     /lapsFor:transponder,day        controllers.Application.lapsFor(transponder: Long, day: String)
+GET     /lapsFor:transponder,day    controllers.Application.lapsFor(transponder: Long, day: String)
 GET     /getLaps                    controllers.Application.getLaps
+
+# The EventSource stream
+GET     /updates                    controllers.Application.updates
+GET     /postUpdate                 controllers.Application.postUpdate
+
 POST    /addLap                     controllers.Application.addLap
 DELETE  /deleteAll                  controllers.Application.deleteAll
 

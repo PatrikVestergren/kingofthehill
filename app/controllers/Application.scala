@@ -6,15 +6,15 @@ import java.time.LocalDate
 import com.google.gson.Gson
 import models.{BestMinutes, BestNLaps, CurrentRacer, Lap}
 import org.slf4j.LoggerFactory
+import play.api.libs.EventSource
+import play.api.libs.iteratee.Concurrent
 import play.api.mvc.{Action, Controller}
-
 
 class Application extends Controller {
 
   val logger = LoggerFactory.getLogger(getClass)
   val NR_OF_LAPS = 3
   val manager = new Manager(NR_OF_LAPS)
-
 
   def index = Action {
     val laps = manager.getBestNLaps(NR_OF_LAPS)
@@ -26,6 +26,18 @@ class Application extends Controller {
     val min_four = minutes._2
     val min_none = minutes._3
     Ok(views.html.index(manager.getCurrentRacers(), laps_two, laps_four, laps_none, min_two, min_four, min_none, LocalDate.now().toString))
+  }
+
+  val (out, channel) = Concurrent.broadcast[String]
+
+  def postUpdate = Action {
+    channel.push("update")
+    Redirect(routes.Application.index())
+  }
+
+  def updates = Action {
+    implicit request =>
+      Ok.feed(out &> EventSource()).as("text/event-stream")
   }
 
   def addLap = Action(parse.json) {
@@ -40,7 +52,7 @@ class Application extends Controller {
       else {
         val lap = new Lap(driver, transponder, lapNr, lapTime, LocalDate.now())
         manager.update(lap)
-        Redirect(routes.Application.index())
+        Redirect(routes.Application.postUpdate())
       }
   }
 
@@ -68,6 +80,7 @@ class Application extends Controller {
     println("all deleted")
     Redirect(routes.Application.index())
   }
+
 }
 
 //@base: #A65B00;
