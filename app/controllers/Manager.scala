@@ -22,13 +22,28 @@ class Manager(nrOfLaps: Int) {
 
   def update(lap: Lap): Unit = {
 
-    val driver = lap.driver
-    val lapTime = lap.lapTime
     val lapNr = lap.lapNr
     val transponder = lap.transponder
 
-    Lap.create(lap)
+    // handle restart of myrcm, i.e. lap number restarted
+    val latests = Lap.getLatest(transponder)
+    if (latests.isEmpty) {
+      updateAll(lap)
+    } else {
+      val latest = latests.head
+      if (latest.lapNr == lapNr) return
+      if (lapNr < latest.lapNr) updateAll(Lap(lap.driver, lap.transponder, latest.lapNr + 1, lap.lapTime, lap.ts))
+      else updateAll(lap)
+    }
 
+  }
+
+  def updateAll(lap: Lap): Unit = {
+    Lap.create(lap)
+    val driver: String = lap.driver
+    val lapTime: Long = lap.lapTime
+    val transponder: Long = lap.transponder
+    val lapNr = lap.lapNr
     val todays = Lap.lapsForDriverAtDate(transponder, lap.ts.toString)
     val bestThree = calculator.getBestNLapsTime(todays, nrOfLaps)
     if (bestThree > 0) {

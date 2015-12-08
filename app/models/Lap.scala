@@ -5,7 +5,6 @@ package models
  */
 
 
-import java.sql.Date
 import java.time.LocalDate
 
 import anorm.SqlParser._
@@ -54,6 +53,12 @@ object Lap {
   def lapsForDriverAtDate(t: Long, atDate: String) = {
     DB.withConnection { implicit connection =>
       SQL(s"SELECT * FROM LAP WHERE transponder=$t AND ts=to_date('$atDate', 'YYYY MM DD') ORDER BY lapNr").as(Lap.simple *)
+    }
+  }
+
+  def getLatest(t: Long) = {
+    DB.withConnection { implicit connection =>
+      SQL(s"SELECT * FROM LAP WHERE lapNr = (SELECT max(lapNr) from LAP WHERE transponder=$t AND ts = (SELECT TIMESTAMP 'today')) AND transponder=$t").as(Lap.simple *)
     }
   }
 
