@@ -1,0 +1,1 @@
+web: target/universal/stage/bin/powerful-reaches-7383 -Dhttp.port=${PORT} -DapplyEvolutions.default=true -Ddb.default.driver=org.postgresql.Driver -Ddb.default.hikaricp.connectionTestQuery="SELECT TRUE" -Ddb.default.url=${DATABASE_URL}
