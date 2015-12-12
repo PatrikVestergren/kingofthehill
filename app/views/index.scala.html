@@ -1,11 +1,12 @@
 @(laps: Seq[CurrentRacer], bestLaps2wd: Seq[BestNLaps], bestLaps4wd: Seq[BestNLaps], bestLapsUnknown: Seq[BestNLaps], bestMinutes2wd: Seq[BestMinutes], bestMinutes4wd: Seq[BestMinutes], bestMinutesUnknown: Seq[BestMinutes], date: String)
-@main("King of the Hill") {
+@main("King of the Hill @Evolution Raceway") {
+<input type="hidden" id="refresh" value="no">
 <div class="container">
     <div class="columnCurrent">
         <table class="current">
             <thead>
             <tr>
-                <th class="tableHead" colspan="6">Current Race - @date</th>
+                <th class="tableHead" colspan="6">Current Race - @date </th>
             </tr>
             <tr id="content">
                 <th class="colHead">Laps</th>
