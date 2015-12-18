@@ -1,6 +1,7 @@
 package controllers
 
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.regex.Pattern
 
 import models.{BestMinutes, BestNLaps, CurrentRacer, Lap}
@@ -38,12 +39,14 @@ class Manager(nrOfLaps: Int) {
 
   }
 
+  var latest = (0l ,0l)
   def updateAll(lap: Lap): Unit = {
     Lap.create(lap)
     val driver: String = lap.driver
     val lapTime: Long = lap.lapTime
     val transponder: Long = lap.transponder
     val lapNr = lap.lapNr
+    latest = (transponder, lapNr)
     val todays = Lap.lapsForDriverAtDate(transponder, lap.ts.toString)
     val bestThree = calculator.getBestNLapsTime(todays, nrOfLaps)
     if (bestThree > 0) {
@@ -98,13 +101,22 @@ class Manager(nrOfLaps: Int) {
     "regular"
   }
 
-  def getCurrentRacers(): Seq[CurrentRacer] = {
+  def calcCss(transponder: Long, lapNr: Long): String = {
+    if (latest._1 == transponder && latest._2 == lapNr) {
+      return "newLap"
+    } else {
+      return "regular"
+    }
+  }
 
-    val racers = CurrentRacer.getLatest().sortWith(calculator.sortNrOfLaps)
+  def getCurrentRacers(): Seq[CurrentRacerPres] = {
+
+    val racers2 = CurrentRacer.getLatest().sortWith(calculator.sortNrOfLaps)
+    val racers = for (r <- racers2) yield CurrentRacerPres(r.driver,  r.transponder, r.lapNr, r.lapTime, r.fastest, r.bestN, r.bestFive, r.tsPres, calcCss(r.transponder, r.lapNr), r.ts)
 
     if (racers.size < 35) {
-      val padding = ListBuffer[CurrentRacer]()
-      for (i <- racers.size until 35) padding += CurrentRacer("-", 0, 0, "-", "-", "-", "-", "-", null)
+      val padding = ListBuffer[CurrentRacerPres]()
+      for (i <- racers.size until 35) padding += CurrentRacerPres("-", 0, 0, "-", "-", "-", "-", "-", "regular", null)
       return racers ++ padding
     }
     return racers
@@ -162,3 +174,4 @@ class Manager(nrOfLaps: Int) {
 }
 
 case class DriverLap(name: String, transponder: Long, lapNr: Long, time: String, cssClass: String)
+case class CurrentRacerPres(driver: String, transponder: Long, lapNr: Long, lapTime: String, fastest: String, bestN: String, bestFive: String, tsPres: String, cssClass: String, ts: LocalDate)

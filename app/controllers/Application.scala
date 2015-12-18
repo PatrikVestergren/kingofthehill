@@ -32,7 +32,7 @@ class Application extends Controller {
 
   def postUpdate = Action {
     channel.push("update")
-    Redirect(routes.Application.index())
+    Ok//Redirect(routes.Application.index())
   }
 
   def updates = Action {
@@ -82,9 +82,3 @@ class Application extends Controller {
   }
 
 }
-
-//@base: #A65B00;
-//@lighter1: #FFA940;
-//@lighter2: #FFC073;
-//@darker1: #BF7F30;
-//@darker2: #FF8C00;

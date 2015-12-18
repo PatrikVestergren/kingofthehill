@@ -1,4 +1,4 @@
-@(laps: Seq[CurrentRacer], bestLaps2wd: Seq[BestNLaps], bestLaps4wd: Seq[BestNLaps], bestLapsUnknown: Seq[BestNLaps], bestMinutes2wd: Seq[BestMinutes], bestMinutes4wd: Seq[BestMinutes], bestMinutesUnknown: Seq[BestMinutes], date: String)
+@(laps: Seq[CurrentRacerPres], bestLaps2wd: Seq[BestNLaps], bestLaps4wd: Seq[BestNLaps], bestLapsUnknown: Seq[BestNLaps], bestMinutes2wd: Seq[BestMinutes], bestMinutes4wd: Seq[BestMinutes], bestMinutesUnknown: Seq[BestMinutes], date: String)
 @main("King of the Hill @Evolution Raceway") {
 <input type="hidden" id="refresh" value="no">
 <div class="container">
@@ -19,7 +19,7 @@
             </thead>
             <tbody>
             @for(lap <- laps) {
-            <tr class="row">
+            <tr class="row @lap.cssClass">
                 <td class="laps">@lap.lapNr</td>
                 <td class="driver"><a href="@routes.Application.lapsFor(lap.transponder, date)">@lap.driver</a></td>
                 <td class="col">@lap.lapTime</td>
