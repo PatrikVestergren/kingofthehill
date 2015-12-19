@@ -185,12 +185,16 @@ tr.bestFive td {
 
 tr.newLap td {
     animation-name: lap;
-    animation-duration: 5s;
+    animation-duration: 7s;
 }
 
 @keyframes lap {
-    from {background-color: yellow;}
-    to {background-color: yellow;}
+    0% {
+        background-color: yellow;
+    }
+    100% {
+        background-color: white;
+    }
 }
 
 tr.fastLap td {
