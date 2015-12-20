@@ -103,7 +103,6 @@ class Manager(nrOfLaps: Int) {
 
   def calcCss(transponder: Long, lapNr: Long): String = {
     if (latest._1 == transponder && latest._2 == lapNr) {
-      latest = (0l, 0l)
       return "newLap"
     } else {
       return "regular"
