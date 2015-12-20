@@ -103,6 +103,7 @@ class Manager(nrOfLaps: Int) {
 
   def calcCss(transponder: Long, lapNr: Long): String = {
     if (latest._1 == transponder && latest._2 == lapNr) {
+      latest = (0l, 0l)
       return "newLap"
     } else {
       return "regular"
@@ -113,7 +114,7 @@ class Manager(nrOfLaps: Int) {
 
     val racers2 = CurrentRacer.getLatest().sortWith(calculator.sortNrOfLaps)
     val racers = for (r <- racers2) yield CurrentRacerPres(r.driver,  r.transponder, r.lapNr, r.lapTime, r.fastest, r.bestN, r.bestFive, r.tsPres, calcCss(r.transponder, r.lapNr), r.ts)
-    latest = (0l, 0l)
+
     if (racers.size < 35) {
       val padding = ListBuffer[CurrentRacerPres]()
       for (i <- racers.size until 35) padding += CurrentRacerPres("-", 0, 0, "-", "-", "-", "-", "-", "regular", null)
