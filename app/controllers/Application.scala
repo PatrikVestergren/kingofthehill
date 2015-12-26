@@ -4,7 +4,7 @@ package controllers
 import java.time.LocalDate
 
 import com.google.gson.Gson
-import models.{BestMinutes, BestNLaps, CurrentRacer, Lap}
+import models.Lap
 import org.slf4j.LoggerFactory
 import play.api.libs.EventSource
 import play.api.libs.iteratee.Concurrent
@@ -65,7 +65,7 @@ class Application extends Controller {
   def lapsFor(transponder: Long, day: String) = Action {
     if (transponder == 0) Redirect(routes.Application.index())
     else {
-      val laps = manager.getTodaysLapsFor(transponder.toLong, day)
+      val laps = manager.getTodaysLapsFor(transponder, day)
       val title = if (laps._1.size > 0) laps._1.head.name + " [" + transponder + "]" else "-"
       Ok(views.html.lapsFor(laps._1, laps._2, laps._3, title, day))
     }
