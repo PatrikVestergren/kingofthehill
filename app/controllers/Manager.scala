@@ -6,7 +6,7 @@ import java.util.regex.Pattern
 
 import models.{BestMinutes, BestNLaps, CurrentRacer, Lap}
 
-import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.{ArrayBuffer, ListBuffer}
 
 /**
   * Created by patrikv on 04/11/15.
@@ -88,17 +88,27 @@ class Manager(nrOfLaps: Int) {
     val bestNTime = bestN.view.map(_.lapTime).sum
     val bestFive = calculator.getBestFiveMinutes(laps)
 
-    val result = for (lap <- laps) yield DriverLap(driver, transponder, lap.lapNr, formatTime(lap.lapTime), calcClass(lap.lapNr, bestLap.head, bestN, bestFive))
+    val result = new ListBuffer[DriverLap]()
+    for (lap <- laps) {
+      val c = calcClass(lap.lapNr, lap.lapTime, bestLap.head, bestN, bestFive)
+      result += DriverLap(driver, transponder, lap.lapNr, c._2, c._1)
+    }
 
     val b = result.sortWith(calculator.sortNrOfLaps)
     (b.distinct, formatTime(bestNTime), bestFive._1.length + "/" + formatTime(bestFive._2))
   }
 
-  def calcClass(lapNr: Long, bestLap: Lap, bestN: Seq[Lap], bestFive: (Seq[Lap], Long)): String = {
-    if (bestLap.lapNr == lapNr) return "fastLap"
-    for (lap <- bestN) if (lap.lapNr == lapNr) return "bestN"
-    for (lap <- bestFive._1) if (lap.lapNr == lapNr) return "bestFive"
-    "regular"
+  def calcClass(lapNr: Long, lapTime: Long, bestLap: Lap, bestN: Seq[Lap], bestFive: (Seq[Lap], Long)): (String, String) = {
+    if (bestLap.lapNr == lapNr) return ("fastLap", formatTime(lapTime))
+    for (lap <- bestN) if (lap.lapNr == lapNr) return ("bestN", formatTime(lapTime))
+    for (lap <- bestFive._1) if (lap.lapNr == lapNr) {
+      if (lapTime > 240000) {
+        return ("bestFive", "Break, but also part of best five minutes (" + formatTime(lapTime) + ")")
+      }
+      return ("bestFive", formatTime(lapTime))
+    }
+    if (lapTime > 240000) return ("break", "Break (" + formatTime(lapTime) + ")")
+    ("regular", formatTime(lapTime))
   }
 
   def calcCss(transponder: Long, lapNr: Long): String = {
