@@ -1,4 +1,4 @@
-@(laps: Seq[CurrentRacerPres], bestLaps2wd: Seq[BestNLaps], bestLaps4wd: Seq[BestNLaps], bestLapsUnknown: Seq[BestNLaps], bestMinutes2wd: Seq[BestMinutes], bestMinutes4wd: Seq[BestMinutes], bestMinutesUnknown: Seq[BestMinutes], date: String)
+@(laps: Seq[CurrentRacerPres], bestLaps2wd: Seq[BestNLaps], bestLaps4wd: Seq[BestNLaps], bestLapsUnknown: Seq[BestNLaps], bestMinutes2wd: Seq[BestMinutes], bestMinutes4wd: Seq[BestMinutes], bestMinutesUnknown: Seq[BestMinutes], date: String, totalLaps: Long)
 @main("King of the Hill @Evolution Raceway") {
 <input type="hidden" id="refresh" value="no">
 <div class="container">
@@ -183,4 +183,5 @@
         </table>
     </div>
 </div>
+<div class="totalLaps">Total number of laps: @totalLaps</div>
 }

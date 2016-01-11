@@ -7,6 +7,7 @@ function refreshDiv() {
     $('.bestMinutes4wd').load(document.URL +  ' .bestMinutes4wd');
     $('.bestLapsUnknown').load(document.URL +  ' .bestLapsUnknown');
     $('.bestMinutesUnknown').load(document.URL +  ' .bestMinutesUnknown');
+    $('.totalLaps').load(document.URL +  ' .totalLaps');
 }
 
 var event = new EventSource("/updates");

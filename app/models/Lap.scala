@@ -26,6 +26,12 @@ object Lap {
     }
   }
 
+  def totalNrOfLaps() = {
+    DB.withConnection { implicit connection =>
+      SQL("SELECT count(*) FROM LAP").as(scalar[Long].single)
+    }
+  }
+
   def trackRecord() = {
     DB.withConnection { implicit connection =>
       SQL("SELECT * FROM LAP WHERE lapTime = (SELECT min(lapTime) from LAP)").as(Lap.simple *)

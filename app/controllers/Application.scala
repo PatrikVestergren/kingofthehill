@@ -25,7 +25,9 @@ class Application extends Controller {
     val min_two = minutes._1
     val min_four = minutes._2
     val min_none = minutes._3
-    Ok(views.html.index(manager.getCurrentRacers(), laps_two, laps_four, laps_none, min_two, min_four, min_none, LocalDate.now().toString))
+    val totalLaps = Lap.totalNrOfLaps()
+
+    Ok(views.html.index(manager.getCurrentRacers(), laps_two, laps_four, laps_none, min_two, min_four, min_none, LocalDate.now().toString, totalLaps))
   }
 
   val (out, channel) = Concurrent.broadcast[String]
