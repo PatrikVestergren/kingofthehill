@@ -75,10 +75,10 @@ class Application extends Controller {
 
   def deleteAll() = Action {
     println("deleting all...")
-    Lap.deleteAll()
-    CurrentRacer.deleteAll()
-    BestNLaps.deleteAll()
-    BestMinutes.deleteAll()
+    //Lap.deleteAll()
+    //CurrentRacer.deleteAll()
+    //BestNLaps.deleteAll()
+    //BestMinutes.deleteAll()
     println("all deleted")
     Redirect(routes.Application.index())
   }
