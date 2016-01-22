@@ -4,7 +4,7 @@ package controllers
 import java.time.LocalDate
 
 import com.google.gson.Gson
-import models.Lap
+import models.{BestMinutes, BestNLaps, CurrentRacer, Lap}
 import org.slf4j.LoggerFactory
 import play.api.libs.EventSource
 import play.api.libs.iteratee.Concurrent
@@ -74,12 +74,12 @@ class Application extends Controller {
   }
 
   def deleteAll() = Action {
-//    println("deleting all...")
-//    Lap.deleteAll()
-//    CurrentRacer.deleteAll()
-//    BestNLaps.deleteAll()
-//    BestMinutes.deleteAll()
-//    println("all deleted")
+    println("deleting all...")
+    Lap.deleteAll()
+    CurrentRacer.deleteAll()
+    BestNLaps.deleteAll()
+    BestMinutes.deleteAll()
+    println("all deleted")
     Redirect(routes.Application.index())
   }
 
