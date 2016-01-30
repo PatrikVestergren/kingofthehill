@@ -51,27 +51,32 @@ class Manager(nrOfLaps: Int) {
     val bestThree = calculator.getBestNLapsTime(todays, nrOfLaps)
     if (bestThree > 0) {
       val bestThreeDb = BestNLaps.bestFor(transponder)
-      val head = bestThreeDb.head
 
       if (bestThreeDb.isEmpty) {
         BestNLaps.create(BestNLaps(driver, transponder, bestThree, formatTime(bestThree), lap.ts.toString, lap.ts))
-      } else if (BestNLaps.isBetter(bestThree, bestThreeDb.head.totalTime)) {
-        BestNLaps.update(BestNLaps(driver, transponder, bestThree, formatTime(bestThree), lap.ts.toString, lap.ts))
-      } else if (head.driver != driver) {
-        BestNLaps.update(BestNLaps(driver, head.transponder, head.totalTime, head.totalTimePres, head.tsPres, head.ts))
+      } else {
+        val head = bestThreeDb.head
+        if (BestNLaps.isBetter(bestThree, bestThreeDb.head.totalTime)) {
+          BestNLaps.update(BestNLaps(driver, transponder, bestThree, formatTime(bestThree), lap.ts.toString, lap.ts))
+        } else if (head.driver != driver) {
+          BestNLaps.update(BestNLaps(driver, head.transponder, head.totalTime, head.totalTimePres, head.tsPres, head.ts))
+        }
       }
     }
 
     val bestMin = calculator.getBestFiveMinutes(todays)
     if (bestMin._2 > 0) {
       val bestFiveDb = BestMinutes.bestFor(transponder)
-      val head = bestFiveDb.head
+
       if (bestFiveDb.isEmpty) {
         BestMinutes.create(BestMinutes(driver, transponder, bestMin._1.length, bestMin._2, bestMin._1.length + "/" + formatTime(bestMin._2), lap.ts.toString, lap.ts))
-      } else if (calculator.isBetterFive((bestMin._1.length, bestMin._2), (bestFiveDb.head.laps, bestFiveDb.head.totalTime))) {
-        BestMinutes.update(BestMinutes(driver, transponder, bestMin._1.length, bestMin._2, bestMin._1.length + "/" + formatTime(bestMin._2), lap.ts.toString, lap.ts))
-      } else if (head.driver != driver) {
-        BestMinutes.update(BestMinutes(driver, head.transponder, head.laps, head.totalTime, head.result, head.tsPres, head.ts))
+      } else {
+        val head = bestFiveDb.head
+        if (calculator.isBetterFive((bestMin._1.length, bestMin._2), (bestFiveDb.head.laps, bestFiveDb.head.totalTime))) {
+          BestMinutes.update(BestMinutes(driver, transponder, bestMin._1.length, bestMin._2, bestMin._1.length + "/" + formatTime(bestMin._2), lap.ts.toString, lap.ts))
+        } else if (head.driver != driver) {
+          BestMinutes.update(BestMinutes(driver, head.transponder, head.laps, head.totalTime, head.result, head.tsPres, head.ts))
+        }
       }
     }
     val record = Lap.trackRecordTodayFor(transponder).head.lapTime

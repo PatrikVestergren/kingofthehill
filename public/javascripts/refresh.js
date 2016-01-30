@@ -1,6 +1,7 @@
 
 function refreshDiv() {
     $('.current').load(document.URL +  ' .current');
+    $('.currentCont').load(document.URL +  ' .currentCont');
     $('.totalLaps').load(document.URL +  ' .totalLaps');
     $('.bestLaps2wd').load(document.URL +  ' .bestLaps2wd');
     $('.bestMinutes2wd').load(document.URL +  ' .bestMinutes2wd');
