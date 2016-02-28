@@ -160,7 +160,7 @@ class Manager(nrOfLaps: Int) {
       for (i <- laps.size until 10) padding += BestNLaps("-", 0, 0, "-", "-", null)
       return laps ++ padding
     }
-    else if (laps.length > 10) return laps.slice(0, 10)
+    else if (laps.length > 15) return laps.slice(0, 15)
     else return laps
   }
 
@@ -183,7 +183,7 @@ class Manager(nrOfLaps: Int) {
       for (i <- sorted.size until 10) padding += BestMinutes("-", 0, 0, 0, "-", "-", null)
       return sorted ++ padding
     }
-    else if (sorted.length > 10) return sorted.slice(0, 10)
+    else if (sorted.length > 15) return sorted.slice(0, 15)
     else return sorted
   }
 
