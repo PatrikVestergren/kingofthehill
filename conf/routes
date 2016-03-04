@@ -9,7 +9,7 @@ GET     /getLaps                    controllers.Application.getLaps
 
 # The EventSource stream
 GET     /updates                    controllers.Application.updates
-GET     /postUpdate                 controllers.Application.postUpdate
+GET     /postUpdate:lapTime         controllers.Application.postUpdate(lapTime: Long)
 
 POST    /addLap                     controllers.Application.addLap
 DELETE  /deleteAll                  controllers.Application.deleteAll

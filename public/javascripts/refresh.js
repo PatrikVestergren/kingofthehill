@@ -14,5 +14,7 @@ function refreshDiv() {
 var event = new EventSource("/updates");
    event.addEventListener('message', function( event ) {
        refreshDiv();
+       var msg = new SpeechSynthesisUtterance(event.data);
+       window.speechSynthesis.speak(msg);
    }
 ,false);

@@ -1,10 +1,11 @@
 package controllers
 
 
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 
 import com.google.gson.Gson
-import models.{BestMinutes, BestNLaps, CurrentRacer, Lap}
+import models.Lap
 import org.slf4j.LoggerFactory
 import play.api.libs.EventSource
 import play.api.libs.iteratee.Concurrent
@@ -32,8 +33,11 @@ class Application extends Controller {
 
   val (out, channel) = Concurrent.broadcast[String]
 
-  def postUpdate = Action {
-    channel.push("update")
+  val lapFormat = new SimpleDateFormat("mm:ss.SSS")
+  def postUpdate(lapTime: Long) = Action {
+    val formated = lapFormat.format(lapTime)
+    val f = if (formated.startsWith("00:")) formated.drop(3) else formated
+    channel.push(f)
     Ok//Redirect(routes.Application.index())
   }
 
@@ -54,7 +58,7 @@ class Application extends Controller {
       else {
         val lap = new Lap(driver, transponder, lapNr, lapTime, LocalDate.now())
         manager.update(lap)
-        Redirect(routes.Application.postUpdate())
+        Redirect(routes.Application.postUpdate(lapTime))
       }
   }
 
