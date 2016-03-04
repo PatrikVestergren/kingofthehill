@@ -36,8 +36,8 @@ class Application extends Controller {
   val lapFormat = new SimpleDateFormat("mm:ss.SSS")
   def postUpdate(lapTime: Long) = Action {
     val formated = lapFormat.format(lapTime)
-    val f = if (formated.startsWith("00:")) formated.drop(3) else formated
-    channel.push(f)
+    val f = if (formated.startsWith("00:")) formated.drop(3) else ""
+    channel.push(f.replaceAll("\\.", ","))
     Ok//Redirect(routes.Application.index())
   }
 

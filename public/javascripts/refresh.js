@@ -16,6 +16,7 @@ var event = new EventSource("/updates");
        refreshDiv();
        if ('speechSynthesis' in window) {
            var msg = new SpeechSynthesisUtterance(event.data);
+           msg.lang = 'sv-SE';
            window.speechSynthesis.speak(msg);
        }
    }
