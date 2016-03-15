@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 
 import com.google.gson.Gson
-import models.Lap
+import models.{BestMinutes, BestNLaps, CurrentRacer, Lap}
 import org.slf4j.LoggerFactory
 import play.api.libs.EventSource
 import play.api.libs.iteratee.Concurrent
