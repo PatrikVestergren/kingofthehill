@@ -17,6 +17,10 @@ class Application extends Controller {
   val NR_OF_LAPS = 3
   val manager = new Manager(NR_OF_LAPS)
 
+  def construction = Action {
+    Ok(views.html.construction())
+  }
+
   def index = Action {
     val laps = manager.getBestNLaps(NR_OF_LAPS)
     val laps_two = laps._1

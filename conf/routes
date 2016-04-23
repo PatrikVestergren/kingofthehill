@@ -3,7 +3,8 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
+GET     /                           controllers.Application.construction
+GET     /index                      controllers.Application.index
 GET     /lapsFor:transponder,day    controllers.Application.lapsFor(transponder: Long, day: String)
 GET     /getLaps                    controllers.Application.getLaps
 
